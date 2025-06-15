@@ -1,0 +1,133 @@
+.main-toolbar {
+  background-color: rgba(0, 0, 0, 0.7); // 半透明背景
+  color: #fff;
+  height: 80px; // 調整高度以符合圖片
+  display: flex;
+  align-items: center;
+  padding: 0 50px; // 左右留白
+  // position: fixed; // 固定在頂部
+  width: 100%;
+  // top: 0;
+  // left: 0;
+  z-index: 1000; // 確保在其他內容之上
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); // 陰影效果
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  .logo-img {
+    height: 50px; // 調整 Logo 圖片大小
+    margin-right: 10px;
+  }
+}
+
+.spacer {
+  color: bl;
+  flex: 1 1 auto; // 將內容推開
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px; // 連結之間的間距
+  a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease;
+    &:hover {
+      color: #ffe0b2; // 懸停效果 (淺橙色)
+    }
+  }
+}
+
+.icon-links {
+  button {
+    color: #fff;
+    mat-icon {
+      font-size: 28px; // 圖示大小
+      width: 28px;
+      height: 28px;
+    }
+    &:hover {
+      color: #ffe0b2; // 懸停效果
+    }
+  }
+}
+
+.main-footer {
+  background-color: #1a1a1a; // 深色頁腳背景
+  color: #ccc;
+  padding: 50px 50px 20px;
+  margin-top: 50px; // 確保與上方內容有間距
+  // 稍後會在這裡添加詳細的 Grid 佈局樣式
+
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto 40px;
+    flex-wrap: wrap;
+
+    .footer-section {
+      flex: 1;
+      min-width: 220px;
+      h3 {
+        color: #fff;
+        font-size: 18px;
+        margin-bottom: 20px;
+        white-space: nowrap;
+      }
+      p, ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      ul li {
+        margin-bottom: 8px;
+      }
+      a {
+        color: #ccc;
+        text-decoration: none;
+        &:hover {
+          color: #fff;
+        }
+      }
+      .payment-icons img {
+        height: 25px;
+        margin-right: 10px;
+        margin-top: 15px;
+      }
+    }
+  }
+
+  .footer-bottom {
+    border-top: 1px solid #333;
+    padding-top: 20px;
+    text-align: center;
+    color: #888;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+
+    p {
+      margin: 0;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 15px;
+      img {
+        height: 25px;
+        filter: brightness(0.8);
+        &:hover {
+          filter: brightness(1);
+        }
+      }
+    }
+  }
+}

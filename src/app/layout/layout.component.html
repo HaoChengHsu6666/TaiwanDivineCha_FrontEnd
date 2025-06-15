@@ -1,0 +1,29 @@
+<mat-toolbar class="main-toolbar">
+  <div class="logo">
+    <img src="assets/images/logo.png" alt="好神茶廠" class="logo-img">
+    <span>好神茶廠</span>
+  </div>
+
+  <span class="spacer"></span> <div class="nav-links">
+    <a mat-button routerLink="/">神茶入口</a>
+    <a mat-button routerLink="/about">品牌故事</a>
+    <a mat-button routerLink="/products">來品神茶</a>
+    <a mat-button routerLink="/news">最新消息</a> </div>
+
+  <span class="spacer"></span> <div class="icon-links">
+    <button mat-icon-button aria-label="搜尋產品" (click)="onSearchClick()">
+      <mat-icon>search</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="購物車" routerLink="/cart">
+      <mat-icon>shopping_cart</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="登入註冊" (click)="onAuthClick()">
+      <mat-icon>person</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+<router-outlet></router-outlet>
+
+<footer class="main-footer">
+  </footer>

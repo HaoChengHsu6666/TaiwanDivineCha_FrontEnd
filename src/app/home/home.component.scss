@@ -1,0 +1,244 @@
+// **************縮放效果****************
+
+// .hero-section {
+//   position: relative;
+//   width: 100%;
+//   // 讓輪播圖仍然佔滿整個視窗高度，但向上移動 80px
+//   height: 100vh;
+//   // 關鍵修改這裡：使用負的 margin-top
+//   // margin-top: -80px; // <--- 重新啟用這行，讓它往上移動，被導覽列覆蓋
+//   overflow: hidden;
+
+//   background-size: cover;
+//   background-position: center center;
+//   background-repeat: no-repeat;
+//   transition: background-size 4s ease-in-out, background-image 0.5s ease-in-out;
+//   z-index: -1; // 確保在其他內容之下
+
+//   &.zoom-in {
+//     animation: zoomIn 4s forwards;
+//   }
+//   &.zoom-out {
+//     animation: zoomOut 4s forwards;
+//   }
+// }
+
+// // 將原有的 zoom-in 和 zoom-out 移除或註解掉
+
+// @keyframes zoomIn {
+//   0% { background-size: cover; }
+//   100% { background-size: 115%; }
+// }
+
+// @keyframes zoomOut {
+//   0% { background-size: 115%; }
+//   100% { background-size: cover; }
+// }
+
+// **************縮放效果****************
+
+
+// *****************淡入淡出效果*****************
+
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  margin-top: 0; // 繼續使用您目前的 z-index: -1 解決方案
+  z-index: -1;
+
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+
+  // 關鍵修改：移除 background-size 的 transition，改為 opacity 的 transition
+  transition: opacity 2s ease-in-out, background-image 2s; // background-image 立即切換
+
+  // 透過 class 觸發動畫
+  &.fade-in {
+    opacity: 1;
+    animation: fadeIn 3s forwards; // 添加動畫效果
+  }
+  &.fade-out {
+    opacity: 0; // 暫時不需要這個 class，因為圖片會直接替換
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// *****************淡入淡出效果*****************
+
+
+
+
+
+
+
+
+
+// 下面非輪播圖效果
+
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: left;
+  color: #fff;
+  z-index: 10; // 確保內容在輪播圖之上
+  width: 80%;
+  max-width: 1200px;
+  padding-left: 50px;
+
+  h1 {
+    font-size: 60px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  p {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  }
+}
+
+// ... 其他樣式保持不變
+
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 100vh; // 讓其佔滿整個視窗高度
+  overflow: hidden; // 防止內容溢出
+  margin-top: -80px; // 抵消導覽列高度，讓輪播圖從頂部開始
+
+  ::ng-deep ng-image-slider {
+    .main-carousel {
+      height: 100vh !important; // 確保輪播圖本身佔滿視窗高度
+      .image-item {
+        height: 100% !important;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover; // 圖片覆蓋整個容器
+          object-position: center;
+        }
+      }
+    }
+    .slider-arrows {
+      // 調整箭頭位置和樣式
+      .left-arrow, .right-arrow {
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        color: white;
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.7);
+        }
+      }
+    }
+    .carousel-container .indicator-area {
+      // 隱藏下方指示器
+      display: none;
+    }
+  }
+}
+
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: left; // 讓文字靠左
+  color: #fff;
+  z-index: 10; // 確保文字在輪播圖之上
+  width: 80%; // 調整文字區塊寬度
+  max-width: 1200px; // 最大寬度
+  padding-left: 50px; // 根據您圖片的左側間距調整
+
+  h2 {
+    font-size: 40px; // 調整大標題字體大小
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); // 增加文字陰影提高可讀性
+  }
+
+  p {
+    font-size: 24px; // 調整小標題字體大小
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* 茶品分類區塊 */
+.tea-categories-section,
+.popular-products-section,
+.latest-news-section {
+  padding: 80px 50px; // 上下邊距和左右邊距
+  text-align: center;
+  h2 {
+    font-size: 36px;
+    margin-bottom: 50px;
+    color: #333;
+    font-weight: bold;
+  }
+}
+
+/* 品牌介紹區塊 */
+.brand-story-teaser-section {
+  padding: 100px 50px;
+  background-color: #f8f8f8; // 淺灰色背景
+  .brand-content {
+    display: flex;
+    align-items: center;
+    gap: 80px; // 圖片與文字之間的間距
+    max-width: 1200px;
+    margin: 0 auto; // 居中
+
+    .brand-image {
+      flex: 1;
+      img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px; // 圓角
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); // 陰影
+      }
+    }
+
+    .brand-text {
+      flex: 1;
+      text-align: left;
+      .subtitle {
+        font-size: 16px;
+        color: #777;
+        margin-bottom: 10px;
+      }
+      h2 {
+        font-size: 42px;
+        margin-bottom: 20px;
+        color: #333;
+        font-weight: bold;
+      }
+      p {
+        font-size: 18px;
+        line-height: 1.8;
+        color: #555;
+        margin-bottom: 30px;
+      }
+      button {
+        padding: 12px 25px;
+        font-size: 18px;
+        border-radius: 5px;
+        background-color: #7a9c59; // 綠色按鈕
+        color: white;
+        &:hover {
+          background-color: darken(#7a9c59, 10%);
+        }
+      }
+    }
+  }
+}

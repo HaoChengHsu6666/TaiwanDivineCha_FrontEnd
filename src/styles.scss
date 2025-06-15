@@ -1,1 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  scroll-behavior: smooth; // 平滑捲動
+}
+
+/* 確保 router-outlet 的內容從導覽列下方開始 */
+app-layout {
+  display: block;
+  // 將來如果導覽列是絕對定位，這裡需要調整 padding-top 或 margin-top
+}
