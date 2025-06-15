@@ -1,17 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component'; // 導入 HomeComponent
+// import { ContactComponent } from './contact/contact.component'; // 如果您有聯絡我們頁面
+// import { AboutComponent } from './about/about.component'; // 如果您有關於好神頁面
+import { ProductListComponent } from './product-list/product-list.component'; // 導入 ProductListComponent
+import { ProductDetailComponent } from './product-detail/product-detail.component'; // 導入 ProductDetailComponent
 
 const routes: Routes = [
-  {
-    path: '', // 根路徑
-    component: HomeComponent // 對應到 HomeComponent
-  },
-  // { path: 'about', component: AboutUsComponent }, // 稍後會建立
-  // { path: 'products', component: ProductSectionComponent }, // 稍後會建立
-  // { path: 'news', component: NewsComponent }, // 稍後會建立
-  // { path: 'cart', component: CartComponent }, // 稍後會建立
-  // { path: '**', redirectTo: '' } // 處理未匹配的路徑，導向首頁
+  { path: '', component: HomeComponent },
+  { path: 'products', component: ProductListComponent }, // 所有商品列表 (來品神茶主頁)
+  { path: 'products/category/:category', component: ProductListComponent }, // 按分類篩選 (如果需要更精確路由)
+  { path: 'product/:id', component: ProductDetailComponent }, // 商品細節頁
+  // { path: 'contact', component: ContactComponent },
+  // { path: 'about', component: AboutComponent },
+  // ... 其他路由
+  { path: '**', redirectTo: '' } // 捕獲所有未定義路由並重定向到首頁
 ];
 
 @NgModule({

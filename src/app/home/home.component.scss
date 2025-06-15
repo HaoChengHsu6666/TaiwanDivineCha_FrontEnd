@@ -108,137 +108,153 @@
   }
 }
 
-// ... 其他樣式保持不變
-
-.hero-section {
-  position: relative;
-  width: 100%;
-  height: 100vh; // 讓其佔滿整個視窗高度
-  overflow: hidden; // 防止內容溢出
-  margin-top: -80px; // 抵消導覽列高度，讓輪播圖從頂部開始
-
-  ::ng-deep ng-image-slider {
-    .main-carousel {
-      height: 100vh !important; // 確保輪播圖本身佔滿視窗高度
-      .image-item {
-        height: 100% !important;
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover; // 圖片覆蓋整個容器
-          object-position: center;
-        }
-      }
-    }
-    .slider-arrows {
-      // 調整箭頭位置和樣式
-      .left-arrow, .right-arrow {
-        background-color: rgba(0, 0, 0, 0.5);
-        border-radius: 50%;
-        color: white;
-        &:hover {
-          background-color: rgba(0, 0, 0, 0.7);
-        }
-      }
-    }
-    .carousel-container .indicator-area {
-      // 隱藏下方指示器
-      display: none;
-    }
-  }
-}
-
-.hero-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: left; // 讓文字靠左
-  color: #fff;
-  z-index: 10; // 確保文字在輪播圖之上
-  width: 80%; // 調整文字區塊寬度
-  max-width: 1200px; // 最大寬度
-  padding-left: 50px; // 根據您圖片的左側間距調整
-
-  h2 {
-    font-size: 40px; // 調整大標題字體大小
-    margin-bottom: 10px;
-    font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); // 增加文字陰影提高可讀性
-  }
-
-  p {
-    font-size: 24px; // 調整小標題字體大小
-    margin-bottom: 20px;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-  }
-}
-
-/* 茶品分類區塊 */
-.tea-categories-section,
-.popular-products-section,
-.latest-news-section {
-  padding: 80px 50px; // 上下邊距和左右邊距
+// 首頁特色產品區塊
+.featured-products-section {
+  padding: 60px 50px;
+  max-width: 1200px;
+  margin: 0 auto;
   text-align: center;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #eee;
+
   h2 {
     font-size: 36px;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
     color: #333;
     font-weight: bold;
   }
-}
 
-/* 品牌介紹區塊 */
-.brand-story-teaser-section {
-  padding: 100px 50px;
-  background-color: #f8f8f8; // 淺灰色背景
-  .brand-content {
-    display: flex;
-    align-items: center;
-    gap: 80px; // 圖片與文字之間的間距
-    max-width: 1200px;
-    margin: 0 auto; // 居中
+  .product-categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 30px;
+    justify-content: center;
 
-    .brand-image {
-      flex: 1;
+    .category-card {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      cursor: pointer;
+
+      &:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+        display: block; // 讓整個卡片可點擊
+      }
+
       img {
         width: 100%;
-        height: auto;
-        border-radius: 8px; // 圓角
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); // 陰影
+        height: 180px; // 固定圖片高度
+        object-fit: cover;
+        display: block;
       }
-    }
 
-    .brand-text {
-      flex: 1;
-      text-align: left;
-      .subtitle {
-        font-size: 16px;
-        color: #777;
-        margin-bottom: 10px;
-      }
-      h2 {
-        font-size: 42px;
-        margin-bottom: 20px;
+      h3 {
+        font-size: 20px;
+        margin: 15px 10px;
         color: #333;
-        font-weight: bold;
-      }
-      p {
-        font-size: 18px;
-        line-height: 1.8;
-        color: #555;
-        margin-bottom: 30px;
-      }
-      button {
-        padding: 12px 25px;
-        font-size: 18px;
-        border-radius: 5px;
-        background-color: #7a9c59; // 綠色按鈕
-        color: white;
-        &:hover {
-          background-color: darken(#7a9c59, 10%);
-        }
+        text-align: center;
       }
     }
   }
+
+  @media (max-width: 768px) {
+    padding: 40px 20px;
+    .product-categories-grid {
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+  }
+
+  @media (max-width: 480px) {
+    .product-categories-grid {
+      grid-template-columns: 1fr; // 單列顯示
+    }
+  }
+}
+
+
+// ... (news-section 和 about-us-section 樣式保持不變) ...
+
+.hero-image-right {
+  position: absolute;
+  right: 10%;
+  bottom: 20%; // 調整位置
+  text-align: center;
+  color: #fff;
+  z-index: 10;
+  
+  img {
+    width: 150px; // 調整鹿圖示大小
+    height: auto;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+  }
+  
+  .image-text {
+    font-size: 30px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-top: 10px;
+  }
+
+  @media (max-width: 992px) {
+    right: 5%;
+    bottom: 10%;
+    img {
+      width: 100px;
+    }
+    .image-text {
+      font-size: 24px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    display: none; // 在小螢幕上隱藏
+  }
+  
+}
+
+.contact-fab {
+  position: fixed; // 確保它們是浮動在頁面上
+  right: 20px;     // 距離右邊緣 20px
+  bottom: 20px;    // 距離底部邊緣 20px
+  z-index: 1000;   // 確保它們在其他內容之上
+
+  display: flex;             // **啟用 Flexbox 佈局**
+  flex-direction: column;    // **讓子元素垂直排列** (從上到下)
+  align-items: center;       // **讓子元素在交叉軸上居中對齊** (水平居中)
+  gap: 15px;                 // **在子元素之間添加 15px 的間距**
+
+  // 如果您希望按鈕是從下往上排列，可以將 flex-direction 設為 column-reverse
+  // flex-direction: column-reverse; // 這樣電話按鈕會在 LINE 按鈕上方
+}
+
+// 確保 LINE 圖示在按鈕內正確顯示
+.line-fab {
+  background-color: #00c300; // LINE 品牌的綠色
+  color: white; // 確保圖示顏色在綠色背景下可見
+  // 您可能還需要調整按鈕的大小，如果 mat-mini-fab 不夠大
+  width: 40px; // Standard size for mat-fab, adjust if mat-mini-fab is smaller
+  height: 40px; // Standard size for mat-fab, adjust if mat-mini-fab is smaller
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .line-image {
+    width: 26px; // 調整 LINE 圖示的大小
+    height: 26px;
+  }
+}
+
+// 調整電話按鈕的顏色 (primary 通常是 Angular Material 預設的藍色)
+.phone-fab {
+  // 如果您希望它也是自定義顏色，可以在這裡設定
+  // background-color: #673ab7; // 例如紫色
+  // color: white;
 }

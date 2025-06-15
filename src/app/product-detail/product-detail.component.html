@@ -1,0 +1,33 @@
+<div class="product-detail-container" *ngIf="product$ | async as product">
+  <div class="product-images">
+    <img [src]="product.imageUrl" alt="{{ product.name }}" class="main-image">
+    <div class="thumbnail-images">
+      <img *ngFor="let img of product.detailImages" [src]="img" alt="{{ product.name }}" class="thumbnail">
+    </div>
+  </div>
+  <div class="product-info">
+    <h1>{{ product.name }}</h1>
+    <p class="category">分類: {{ product.category }}</p>
+    <p class="price">NT$ {{ product.price }}</p>
+    <p class="description">{{ product.description }}</p>
+
+    <div class="features-list" *ngIf="product.features && product.features.length > 0">
+      <h3>產品特色:</h3>
+      <ul>
+        <li *ngFor="let feature of product.features">{{ feature }}</li>
+      </ul>
+    </div>
+
+    <div class="product-meta">
+      <p *ngIf="product.weight">淨重: {{ product.weight }}</p>
+      <p *ngIf="product.origin">產地: {{ product.origin }}</p>
+    </div>
+
+    <button mat-raised-button color="primary" class="add-to-cart-button">
+      <mat-icon>shopping_cart</mat-icon> 加入購物車
+    </button>
+  </div>
+</div>
+<div *ngIf="!(product$ | async)">
+  <p>找不到該商品。</p>
+</div>

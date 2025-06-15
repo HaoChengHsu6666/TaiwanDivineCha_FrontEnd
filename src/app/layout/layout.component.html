@@ -1,27 +1,46 @@
 <mat-toolbar class="main-toolbar">
-  <div class="logo">
-    <img src="assets/images/logo.png" alt="好神茶廠" class="logo-img">
-    <span>好神茶廠</span>
+  <div class="navbar-left">
+    <a routerLink="/" class="logo-link">
+      <img src="assets/logo.png" alt="好神茶廠" class="logo-image">
+    </a>
   </div>
 
-  <span class="spacer"></span> <div class="nav-links">
-    <a mat-button routerLink="/">神茶入口</a>
-    <a mat-button routerLink="/about">品牌故事</a>
-    <a mat-button routerLink="/products">來品神茶</a>
-    <a mat-button routerLink="/news">最新消息</a> </div>
+  <div class="navbar-center">
+    <button mat-button routerLink="/">首頁</button>
+    <button mat-button [matMenuTriggerFor]="teaMenu">來品神茶</button>
+    <mat-menu #teaMenu="matMenu">
+      <button mat-menu-item [routerLink]="['/products']" [queryParams]="{ category: '烏龍茶' }">烏龍茶</button>
+      <button mat-menu-item [routerLink]="['/products']" [queryParams]="{ category: '綠茶' }">綠茶</button>
+      <button mat-menu-item [routerLink]="['/products']" [queryParams]="{ category: '紅茶' }">紅茶</button>
+      <button mat-menu-item [routerLink]="['/products']" [queryParams]="{ category: '東方美人茶' }">東方美人茶</button>
+      <button mat-menu-item [routerLink]="['/products']">所有茶品</button> </mat-menu>
+    <button mat-button routerLink="/contact">聯絡我們及匯款</button>
+    <button mat-button [matMenuTriggerFor]="aboutMenu">關於好神</button>
+    <mat-menu #aboutMenu="matMenu">
+      <button mat-menu-item routerLink="/about">品牌故事</button>
+      <button mat-menu-item routerLink="/history">發展歷史</button>
+    </mat-menu>
+    <button mat-button [matMenuTriggerFor]="moreMenu">更多</button>
+    <mat-menu #moreMenu="matMenu">
+      <button mat-menu-item routerLink="/news">最新消息</button>
+      <button mat-menu-item routerLink="/faq">常見問題</button>
+    </mat-menu>
+  </div>
 
-  <span class="spacer"></span> <div class="icon-links">
-    <button mat-icon-button aria-label="搜尋產品" (click)="onSearchClick()">
+  <span class="navbar-spacer"></span>
+  <div class="navbar-right">
+    <button mat-icon-button>
       <mat-icon>search</mat-icon>
     </button>
-    <button mat-icon-button aria-label="購物車" routerLink="/cart">
+    <button mat-icon-button>
       <mat-icon>shopping_cart</mat-icon>
     </button>
-    <button mat-icon-button aria-label="登入註冊" (click)="onAuthClick()">
+    <button mat-icon-button>
       <mat-icon>person</mat-icon>
     </button>
   </div>
 </mat-toolbar>
+
 
 <router-outlet></router-outlet>
 

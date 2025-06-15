@@ -1,0 +1,197 @@
+/* src/app/product-list/product-list.component.scss */
+
+.product-list-container {
+  padding: 80px 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+
+  // **新增這裡：對整個容器進行縮放**
+  // 0.8 表示縮小到 80% 的大小，您可以調整這個值
+  transform: scale(0.8); 
+  transform-origin: top center; // 設定縮放的基準點，從頂部中心縮放
+  width: 125%; // 增加寬度以彌補縮小後留下的空間，100% / 0.8 = 125%
+  margin: -50px auto 0; // 可能需要調整 margin 來讓縮小後的內容居中和定位，根據縮放比例調整
+
+  h2 {
+    font-size: 36px;
+    margin-bottom: 40px;
+    color: #333;
+    font-weight: bold;
+  }
+}
+
+.product-grid {
+  display: grid;
+  // **調整這裡：將最小寬度設定得更大，使其在 1200px 寬度下通常只顯示兩列**
+  // 例如，如果設定 minmax(400px, 1fr)，在 1200px 寬度下最多顯示 3 列 (1200 / 400 = 3)
+  // 若要強制兩列，可以在桌面版直接寫 repeat(2, 1fr)
+  // 但為了響應式，我們嘗試調整 minmax 的值，讓它在桌面版趨近兩列
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); // 調整此值以強制兩列
+  gap: 30px;
+  justify-content: center;
+}
+
+.product-card {
+  text-align: center;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  overflow: hidden; 
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+    display: block; 
+  }
+
+  mat-card-image {
+    // 雖然圖片已經壓縮，但這裡仍確保容器有固定高度和裁切
+    width: 100%; 
+    height: 240px; // 調整為更大高度，讓圖片有更多空間顯示，並配合 800px 寬度的圖片比例
+    overflow: hidden; 
+    border-bottom: 1px solid #eee;
+
+    img {
+      width: 10%; // 圖片寬度填滿容器
+      height: 10%; // 圖片高度填滿容器
+      object-fit: cover; // 確保圖片填滿，超出部分裁切
+      display: block; 
+      // margin: 0 auto; // 如果圖片寬度不是 100% 才需要居中
+    }
+  }
+
+  mat-card-content {
+    padding: 15px; 
+    
+    h3 {
+      font-size: 20px; 
+      margin: 10px 0; 
+      color: #333;
+      font-weight: bold;
+      text-align: center;
+      white-space: normal; 
+      overflow: hidden; 
+      text-overflow: ellipsis; 
+      max-height: 2.8em; 
+      line-height: 1.4em;
+    }
+    .category-tag {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 10px;
+    }
+    .price {
+      font-size: 22px;
+      font-weight: bold;
+      color: #c00;
+      margin-top: 5px;
+      margin-bottom: 15px;
+    }
+  }
+
+  mat-card-actions {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 15px;
+    border-top: 1px solid #eee;
+    width: 100%; 
+    
+    button {
+      color: #007bff;
+      font-size: 14px;
+      padding: 6px 12px;
+      &:hover {
+        background-color: rgba(0, 123, 255, 0.05);
+      }
+    }
+  }
+}
+
+/* 響應式調整 */
+@media (max-width: 992px) {
+  .product-list-container {
+    // 在響應式斷點處，可能需要取消縮放或調整縮放比例
+    transform: scale(0.9); // 例如縮小到 90%
+    width: 111.11%; // 100% / 0.9
+    margin: -30px auto 0; 
+  }
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); // 調整中等螢幕下為兩列 (或更多)
+    gap: 20px;
+  }
+  .product-card {
+    mat-card-image {
+      height: 200px; 
+    }
+    mat-card-content {
+      h3 {
+        font-size: 17px;
+        max-height: 2.8em; 
+      }
+      .price {
+        font-size: 19px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .product-list-container {
+    // 進一步縮小或完全移除縮放
+    transform: scale(1); // 恢復正常大小
+    width: auto;
+    margin: 0 auto;
+  }
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); // 再次調整為兩列
+    gap: 15px;
+  }
+  .product-card {
+    mat-card-image {
+      height: 180px; 
+    }
+    mat-card-content {
+      h3 {
+        font-size: 16px;
+        max-height: 2.8em; 
+      }
+      .price {
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .product-list-container {
+    transform: scale(1); // 恢復正常大小
+    width: auto;
+    margin: 0 auto;
+  }
+  .product-grid {
+    grid-template-columns: 1fr; // 更小的螢幕下，單列顯示
+    gap: 15px;
+  }
+  .product-card {
+    mat-card-image {
+      height: 200px; 
+    }
+    mat-card-content {
+      h3 {
+        font-size: 18px;
+        max-height: 2.8em; 
+      }
+      .price {
+        font-size: 20px;
+      }
+    }
+  }
+}

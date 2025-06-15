@@ -9,19 +9,29 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatCardModule } from '@angular/material/card'; // 導入 MatCardModule
 
 // 元件
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './home/home.component';
+// import { ContactComponent } from './contact/contact.component';
+// import { AboutComponent } from './about/about.component';
+import { ProductService } from './core/services/product.service'; // 導入 ProductService
+import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { ProductListComponent } from './product-list/product-list.component';
 
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'; // 導入此模組
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LayoutComponent,
-    HomeComponent
+    HomeComponent,
+    // ContactComponent,
+    // AboutComponent,
+    ProductDetailComponent,
+    ProductListComponent
   ],
   imports: [
     BrowserModule,
@@ -31,9 +41,11 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
+    MatCardModule // 添加 MatCardModule
   ],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    ProductService // 提供 ProductService
   ],
   bootstrap: [AppComponent]
 })

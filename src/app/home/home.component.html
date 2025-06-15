@@ -1,35 +1,115 @@
-<section class="hero-section" [ngStyle]="{'background-image': 'url(' + currentBackground + ')'}">
+<section class="hero-section"
+  [ngStyle]="{'background-image': 'url(' + currentBackground + ')'}"
+  [ngClass]="currentAnimationClass">
   <div class="hero-content">
     <div class="hero-text">
-      <h2>國家有機茶葉認證</h2>
       <p>好神製茶廠 | 五代傳承 | 國家有機茶葉認證</p>
-    </div>
-  </div>
-  </section>
-
-<section class="tea-categories-section">
-  <h2>茶品分類 - 購買</h2>
-  </section>
-
-<section class="popular-products-section">
-  <h2>熱門茶品</h2>
-  </section>
-
-<section class="brand-story-teaser-section">
-  <div class="brand-content">
-    <div class="brand-image">
-      <img src="assets/images/brand-teaser.jpg" alt="茶具">
-    </div>
-    <div class="brand-text">
-      <p class="subtitle">從台灣出發 | 在世界舞台發光</p>
-      <h2>泰旺茶廠</h2>
-      <p>泰旺製茶廠做茶葉已有二百多年的歷史，到現代社會已有古代歷史。製茶所在地:阿里山(頂湖茶區)、龍鳳峽、梨山(華崗茶區)、大禹嶺(105K原始森林茶區)、杉林溪、坪林文山包種茶(雪山龍脈茶區)</p>
-      <p>以上各山區茶葉都是我們家族傳承，在我父親S3年專業高山茶老師父嚴格製造及烘焙，再由茶葉專家嚴格評比、嚴格精選好茶分級，才能給客戶們批發價、品質掛保證。</p>
-      <button mat-raised-button color="primary" routerLink="/about">瞭解更多</button>
     </div>
   </div>
 </section>
 
-<section class="latest-news-section">
+<section class="featured-products-section">
+  <h2>來品神茶</h2>
+  <div class="product-categories-grid">
+    <div class="category-card">
+      <a [routerLink]="['/product', 'sanxia-biluochun']">
+        <img src="assets/products/sanxia-biluochun.jpg" alt="三峽碧螺春綠">
+        <h3>三峽碧螺春綠</h3>
+      </a>
+    </div>
+    <div class="category-card">
+      <a [routerLink]="['/product', 'shanlinxi-qing']">
+        <img src="assets/products/shanlinxi-qing.jpg" alt="杉林溪青">
+        <h3>杉林溪青</h3>
+      </a>
+    </div>
+    <div class="category-card">
+      <a [routerLink]="['/product', 'dongding-oolong']">
+        <img src="assets/products/dongding-oolong.jpg" alt="凍頂烏龍">
+        <h3>凍頂烏龍</h3>
+      </a>
+    </div>
+    <div class="category-card">
+      <a [routerLink]="['/product', 'beipu-oriental-beauty']">
+        <img src="assets/products/beipu-oriental-beauty.jpg" alt="北埔東方美人">
+        <h3>北埔東方美人</h3>
+      </a>
+    </div>
+    <div class="category-card">
+      <a [routerLink]="['/product', 'sun-moon-lake-ruby']">
+        <img src="assets/products/sun-moon-lake-ruby.jpg" alt="日月潭紅玉">
+        <h3>日月潭紅玉</h3>
+      </a>
+    </div>
+    <div class="category-card">
+      <a [routerLink]="['/product', 'Mucha_Tieguanyin']">
+        <img src="assets/products/Mucha_Tieguanyin.jpg" alt="木柵鐵觀音">
+        <h3>木柵鐵觀音</h3>
+      </a>
+    </div>
+    <div class="category-card">
+      <a [routerLink]="['/product', 'Alishan_Jinxuan_Tea']">
+        <img src="assets/products/Alishan_Jinxuan_Tea.jpg" alt="阿里山金萱">
+        <h3>阿里山金萱</h3>
+      </a>
+    </div>
+    <div class="category-card">
+      <a [routerLink]="['/product', 'Lishan_Green_Tea']">
+        <img src="assets/products/Lishan_Green_Tea.jpg" alt="梨山高山青">
+        <h3>梨山高山青</h3>
+      </a>
+    </div>
+    </div>
+</section>
+
+<section class="news-section">
   <h2>最新消息</h2>
-  </section>
+  <div class="news-cards">
+    <div class="news-card">
+      <img src="assets/news1.jpg" alt="News Image 1">
+      <div class="news-content">
+        <h3>台灣出發 在世界舞台發光</h3>
+        <p>好神製茶廠致力於將台灣好茶推向國際市場...</p>
+      </div>
+    </div>
+    <div class="news-card">
+      <img src="assets/news2.jpg" alt="News Image 2">
+      <div class="news-content">
+        <h3>茶葉採收實景</h3>
+        <p>親身走訪茶園，感受茶葉採收的辛苦與樂趣...</p>
+      </div>
+    </div>
+    <div class="news-card">
+      <img src="assets/news3.jpg" alt="News Image 3">
+      <div class="news-content">
+        <h3>歡迎採購茶葉~送禮自喝兩相宜</h3>
+        <p>無論是年節贈禮還是日常品飲，好神好茶都是您的最佳選擇...</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about-us-section">
+  <div class="about-us-content">
+    <div class="about-us-image">
+      <img src="assets/tea_tools.jpg" alt="茶具與茶葉">
+    </div>
+    <div class="about-us-text">
+      <p class="subtitle">從台灣出發 | 在世界舞台發光</p>
+      <h2>好神茶廠</h2>
+      <img src="assets/tea_factory.jpg" alt="茶廠">
+      <p>好神製茶廠做茶已有二百多年的歷史，到現代社會已有五代歷史。製茶所在地，阿里山 (頂湖茶區)、龍鳳峽 (華崗茶區)、大禹嶺 (105K原始森林茶區)、杉林溪、坪林文山包種茶 (雪山龍膽旁茶區)</p>
+      <p>以上各山區茶葉都是我們家族傳承，在我父親53年專業高山茶老師父嚴格製驗及烘焙，再由茶葉專家嚴格評比、嚴格精選好茶分級，才能給客戶們批發價、品質掛保證。</p>
+      <button mat-raised-button color="accent" routerLink="/about">了解更多</button>
+    </div>
+  </div>
+</section>
+
+<div class="contact-fab">
+  <button mat-mini-fab color="primary" class="phone-fab">
+    <mat-icon>phone</mat-icon>
+  </button>
+  <button mat-mini-fab class="line-fab">
+    <img src="assets/line-icon.png"  class="line-image">
+  </button>
+</div>
