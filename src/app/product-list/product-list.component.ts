@@ -26,12 +26,17 @@ export class ProductListComponent implements OnInit {
         const category = params.get('category');
         const searchTerm = params.get('q');     // **獲取搜尋關鍵字 'q' 參數**
 
+        // 這裡確保 getProducts() 拿到的是 Observable，並且在 filter 時使用 .subscribe 或 .toPromise().then()
+        // 因為 ProductService.getProducts() 已經返回 Observable<Product[]>，所以下面的鏈式操作是正確的
+
         if (category) {
           // 如果有 category 參數，則按分類篩選
           return this.productService.getProductsByCategory(category);
         } else if (searchTerm) {
           // **如果有搜尋關鍵字 'q' 參數，則進行搜尋過濾**
           const lowerCaseTerm = searchTerm.toLowerCase();
+          // 在這裡，我們需要獲取所有產品，然後進行過濾
+          // productService.getProducts() 返回的是 Observable，所以用 switchMap 處理
           return this.productService.getProducts().pipe(
             switchMap(allProducts => {
               const filtered = allProducts.filter(product =>

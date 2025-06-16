@@ -67,7 +67,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
       this.currentBackground = this.images[this.currentImageIndex];
       this.currentAnimationClass = 'fade-in'; // <--- 重新添加 fade-in class 觸發動畫
-      console.log(`切換到第 <span class="math-inline">\{this\.currentImageIndex \+ 1\} 張圖片，應用動畫：</span>{this.currentAnimationClass}`);
     }, 50); // 短暫延遲，確保 class 移除和添加之間有足夠時間觸發動畫
   }
 

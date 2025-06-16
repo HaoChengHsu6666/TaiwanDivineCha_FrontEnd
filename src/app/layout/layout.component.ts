@@ -49,14 +49,17 @@ export class LayoutComponent implements OnInit {
   toggleSearchOverlay(): void {
     this.isSearchOverlayActive = !this.isSearchOverlayActive;
     if (!this.isSearchOverlayActive) {
-      // 關閉時清空搜尋欄和結果
       this.searchTerm = '';
       this.filteredProducts = [];
+      // 當關閉搜尋框時，也可以清空 searchInputSubject 的緩衝
+      // 避免下次打開時，因為上一次未完成的 debounce 而立即觸發搜尋
+      this.searchInputSubject.next('');
     }
   }
 
   // 當搜尋輸入框有任何輸入時觸發
   onSearchInput(): void {
+    console.log(this.searchTerm);
     this.searchInputSubject.next(this.searchTerm);
   }
 
@@ -64,6 +67,12 @@ export class LayoutComponent implements OnInit {
   performSearch(term: string): Observable<Product[]> {
     if (!term || term.trim() === '') {
       return of([]);
+    }
+
+    // 再次確認 allProducts 是否已載入
+    if (this.allProducts.length === 0) {
+      // console.warn('在 performSearch 中：產品資料尚未載入，返回空結果。');
+      return of([]); // 如果資料未載入，立即返回空結果
     }
 
     const lowerCaseTerm = term.toLowerCase();
@@ -82,7 +91,7 @@ export class LayoutComponent implements OnInit {
     if (this.searchTerm.trim() !== '') {
       // 導航到產品列表頁，並將搜尋詞作為查詢參數 'q' 傳遞
       this.router.navigate(['/product-list'], { queryParams: { q: this.searchTerm } });
-      this.toggleSearchOverlay(); // 導航後關閉搜尋彈窗
+      // this.toggleSearchOverlay(); // 導航後關閉搜尋彈窗
     } else {
       // 如果搜尋詞為空，可以給予提示或不做任何操作
       console.log('請輸入搜尋關鍵字。');

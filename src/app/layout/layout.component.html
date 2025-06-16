@@ -51,8 +51,7 @@
       <input type="text" 
         placeholder="Search" 
         [(ngModel)]="searchTerm" 
-        (input)="onSearchInput()" 
-        (keydown.enter)="executeSearch()"
+        (keyup)="onSearchInput()" 
         class="search-input">
       <button mat-icon-button class="search-button" (click)="executeSearch()">
         <mat-icon>search</mat-icon>
