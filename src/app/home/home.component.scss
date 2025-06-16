@@ -221,40 +221,78 @@
 }
 
 .contact-fab {
-  position: fixed; // 確保它們是浮動在頁面上
-  right: 20px;     // 距離右邊緣 20px
-  bottom: 20px;    // 距離底部邊緣 20px
-  z-index: 1000;   // 確保它們在其他內容之上
-
-  display: flex;             // **啟用 Flexbox 佈局**
-  flex-direction: column;    // **讓子元素垂直排列** (從上到下)
-  align-items: center;       // **讓子元素在交叉軸上居中對齊** (水平居中)
-  gap: 15px;                 // **在子元素之間添加 15px 的間距**
-
-  // 如果您希望按鈕是從下往上排列，可以將 flex-direction 設為 column-reverse
-  // flex-direction: column-reverse; // 這樣電話按鈕會在 LINE 按鈕上方
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column; // 垂直排列
+  align-items: center;    // 水平居中對齊
+  gap: 15px;              // 按鈕之間的間距
 }
 
-// 確保 LINE 圖示在按鈕內正確顯示
-.line-fab {
-  background-color: #00c300; // LINE 品牌的綠色
-  color: white; // 確保圖示顏色在綠色背景下可見
-  // 您可能還需要調整按鈕的大小，如果 mat-mini-fab 不夠大
-  width: 40px; // Standard size for mat-fab, adjust if mat-mini-fab is smaller
-  height: 40px; // Standard size for mat-fab, adjust if mat-mini-fab is smaller
+// 統一所有按鈕的基礎樣式
+// 由於您使用了 mat-mini-fab，它本身就帶有圓角和陰影，
+// 我們主要關注寬高和背景色
+.phone-fab,
+.line-fab,
+.facebook-fab,
+.instagram-fab,
+.threads-fab {
+  width: 40px;    // 統一所有按鈕的寬度
+  height: 40px;   // 統一所有按鈕的高度
   display: flex;
   justify-content: center;
   align-items: center;
+  // 移除您原本設定的 color: white; 因為 mat-icon 和圖片的顏色會根據自身背景調整
+}
 
-  .line-image {
-    width: 26px; // 調整 LINE 圖示的大小
-    height: 26px;
+// 電話圖示 (通常是 Angular Material 的 primary color，這裡我們給一個常見的藍色作為範例)
+.phone-fab {
+  background-color: #6200EE; // 這是 Material Design 的一個常見紫色/藍色
+  color: white; // 確保電話圖示是白色的
+  mat-icon {
+    font-size: 24px; // 調整 mat-icon 的大小，使其在 40px 按鈕中居中且清晰
+    width: 24px;
+    height: 24px;
   }
 }
 
-// 調整電話按鈕的顏色 (primary 通常是 Angular Material 預設的藍色)
-.phone-fab {
-  // 如果您希望它也是自定義顏色，可以在這裡設定
-  // background-color: #673ab7; // 例如紫色
-  // color: white;
+// LINE 圖示
+.line-fab {
+  background-color: #00C300; // LINE 品牌的綠色
+  // 這裡不需要 color: white; 因為圖片本身就包含白色圖示
+  .line-image {
+    width: 26px; // 調整 LINE 圖示的大小，使其與電話圖示視覺上一致
+    height: 26spx;
+  }
+}
+
+// Facebook 圖示
+.facebook-fab {
+  background-color: #1877F2; // Facebook 品牌的藍色
+  .facebook-image {
+    width: 40px; // 調整 Facebook 圖示的大小
+    height: 40px;
+  }
+}
+
+// Instagram 圖示
+.instagram-fab {
+  // Instagram 漸層色比較複雜，我們可以選一個主色或使用一個代表色
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+  // 如果漸層太複雜，可以簡化為一個代表色，例如：
+  // background-color: #C13584; // Instagram 代表的紫紅色
+  .instagram-image {
+    width: 26px; // 調整 Instagram 圖示的大小
+    height: 26px;
+  }
+}
+// Threads 圖示
+.threads-fab {
+  background-color: #000000; // Threads 品牌的黑色
+  .threads-image {
+    width: 40px; // 調整 Threads 圖示的大小
+    height: 40px;
+  }
 }
