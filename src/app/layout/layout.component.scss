@@ -131,3 +131,176 @@
     }
   }
 }
+
+// 搜尋疊層 (背景反黑效果)
+.search-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.search-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); // 半透明黑色背景
+  z-index: 1;
+}
+
+.search-panel {
+  position: relative;
+  z-index: 2;
+  background-color: #333; // **將背景色改為灰黑色**
+  color: #eee;             // **文字顏色改為淺色以配合深色背景**
+  width: 90%;
+  max-width: 400px;
+  // margin-top: 80px; **移除或註解掉這個，因為 align-items: center 會處理垂直置中**
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); // 加強陰影，更適合深色背景
+  display: flex;
+  flex-direction: column;
+  transform: translateY(0) scale(0.95); // 初始時稍微縮小，看起來有彈出效果
+  opacity: 0;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+
+  .search-overlay.active & {
+    transform: translateY(0) scale(1); // 彈出時回到原位
+    opacity: 1;
+  }
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px; // **將右側的 X 按鈕移到更靠右的位置，例如 10px**
+    // 或者可以增加右邊距來區隔，例如：margin-right: 10px; 但 absolute 定位更直接
+  color: #ccc; // 調整關閉按鈕顏色
+}
+
+// 調整 search-input-container 內部搜尋按鈕的間距
+.search-input-container {
+  display: flex;
+  align-items: center;
+  border: 1px solid #555; // **調整邊框顏色**
+  border-radius: 5px;
+  padding: 5px;
+  background-color: #888; // **調整輸入框背景色為較淺的灰色**
+  width: 85%; // **調整內部搜尋框的長度**
+  padding-right: 15px; // **增加右邊距，讓放大鏡按鈕與輸入框右側邊緣有更多空間**
+}
+
+.search-input {
+  flex-grow: 1;
+  border: none;
+  padding: 10px;
+  font-size: 18px;
+  outline: none;
+  background: transparent;
+  color: #fff; // **輸入文字顏色改為白色**
+  &::placeholder {
+  color: #bbb; // **調整 placeholder 顏色**
+  margin-left: 10px; // **在搜尋按鈕左側增加間距，使其與輸入框分離**
+  }
+}
+
+.search-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    color: #ccc; // **調整搜尋按鈕圖示顏色** 
+  }
+}
+
+.search-results {
+  margin-top: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+}
+
+// 搜尋結果項目樣式調整，確保在深色背景下可讀
+.search-results {
+  margin-top: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+  border-top: 1px solid #555; // **調整分隔線顏色**
+  padding-top: 10px;
+
+  .search-result-item {
+    border-bottom: 1px solid #555; // **調整分隔線顏色**
+    &:last-child {
+      border-bottom: none;
+    }
+    a {
+      color: #eee; // **搜尋結果連結文字顏色**
+      &:hover {
+        background-color: #555; // **鼠標懸停時的背景色**
+      }
+    }
+    .search-result-info {
+      h4 {
+        color: #fff; // **產品名稱顏色**
+      }
+      .search-result-price {
+        color: #ffcc00; // **價格顏色可以亮一點**
+      }
+    }
+  }
+}
+
+.no-results {
+  margin-top: 20px;
+  text-align: center;
+  color: #777;
+  font-size: 16px;
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+  .search-panel {
+    width: 95%;
+    margin-top: 0px;
+    padding: 15px;
+  }
+  .search-input {
+    font-size: 16px;
+  }
+  .search-button mat-icon {
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+  }
+  .search-result-image {
+    width: 50px;
+    height: 50px;
+  }
+  .search-result-info h4 {
+    font-size: 15px;
+  }
+  .search-result-info .search-result-price {
+    font-size: 13px;
+  }
+}

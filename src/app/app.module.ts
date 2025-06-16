@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HttpClientModule } from '@angular/common/http'; // 確保這個也導入了，用於 ProductService
 
 // Angular Material 模組
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -20,7 +21,7 @@ import { HomeComponent } from './home/home.component';
 import { ProductService } from './core/services/product.service'; // 導入 ProductService
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { ProductListComponent } from './product-list/product-list.component';
-
+import { FormsModule } from '@angular/forms'; // <-- 導入 FormsModule
 
 
 @NgModule({
@@ -36,7 +37,9 @@ import { ProductListComponent } from './product-list/product-list.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,

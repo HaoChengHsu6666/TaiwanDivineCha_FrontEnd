@@ -9,10 +9,10 @@
     <button mat-button routerLink="/">首頁</button>
     <button mat-button [matMenuTriggerFor]="teaMenu">來品神茶</button>
     <mat-menu #teaMenu="matMenu">
-      <button mat-menu-item [routerLink]="['/products']" [queryParams]="{ category: '烏龍茶' }">烏龍茶</button>
       <button mat-menu-item [routerLink]="['/products']" [queryParams]="{ category: '綠茶' }">綠茶</button>
+      <button mat-menu-item [routerLink]="['/products']" [queryParams]="{ category: '青茶' }">青茶</button>
+      <button mat-menu-item [routerLink]="['/products']" [queryParams]="{ category: '烏龍茶' }">烏龍茶</button>
       <button mat-menu-item [routerLink]="['/products']" [queryParams]="{ category: '紅茶' }">紅茶</button>
-      <button mat-menu-item [routerLink]="['/products']" [queryParams]="{ category: '東方美人茶' }">東方美人茶</button>
       <button mat-menu-item [routerLink]="['/products']">所有茶品</button> </mat-menu>
     <button mat-button routerLink="/contact">聯絡我們及匯款</button>
     <button mat-button [matMenuTriggerFor]="aboutMenu">關於好神</button>
@@ -29,7 +29,7 @@
 
   <span class="navbar-spacer"></span>
   <div class="navbar-right">
-    <button mat-icon-button>
+    <button mat-icon-button (click)="toggleSearchOverlay()">
       <mat-icon>search</mat-icon>
     </button>
     <button mat-icon-button>
@@ -40,6 +40,42 @@
     </button>
   </div>
 </mat-toolbar>
+
+<div class="search-overlay" [class.active]="isSearchOverlayActive">
+  <div class="search-backdrop" (click)="toggleSearchOverlay()"></div>
+  <div class="search-panel">
+    <button mat-icon-button class="close-button" (click)="toggleSearchOverlay()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <div class="search-input-container">
+      <input type="text" 
+        placeholder="Search" 
+        [(ngModel)]="searchTerm" 
+        (input)="onSearchInput()" 
+        (keydown.enter)="executeSearch()"
+        class="search-input">
+      <button mat-icon-button class="search-button" (click)="executeSearch()">
+        <mat-icon>search</mat-icon>
+      </button>
+    </div>
+
+    <div class="search-results" *ngIf="searchTerm && filteredProducts.length > 0">
+      <div *ngFor="let product of filteredProducts" class="search-result-item">
+        <a [routerLink]="['/product', product.id]" (click)="toggleSearchOverlay()">
+          <!-- <img [src]="product.imageUrl" alt="{{ product.name }}" class="search-result-image"> -->
+          <div class="search-result-info">
+            <h4>{{ product.name }}</h4>
+            <!-- <p class="search-result-price">NT$ {{ product.price }}</p> -->
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="no-results" *ngIf="searchTerm && filteredProducts.length === 0">
+      沒有找到符合 "{{ searchTerm }}" 的茶品。
+    </div>
+  </div>
+</div>
+
 
 
 <router-outlet></router-outlet>

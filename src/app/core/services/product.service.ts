@@ -26,7 +26,7 @@ export class ProductService {
     {
       id: 'shanlinxi-qing',
       name: '杉林溪青',
-      category: '烏龍茶',
+      category: '青茶',
       imageUrl: 'assets/products/shanlinxi-qing.jpg',
       detailImages: [
         // 'assets/products/shanlinxi-qing-detail.jpg'
@@ -54,7 +54,7 @@ export class ProductService {
     {
       id: 'beipu-oriental-beauty',
       name: '北埔東方美人',
-      category: '東方美人茶',
+      category: '紅茶',
       imageUrl: 'assets/products/beipu-oriental-beauty.jpg',
       detailImages: [
         // 'assets/products/beipu-oriental-beauty-detail.jpg'
@@ -82,7 +82,7 @@ export class ProductService {
     {
         id: 'Mucha_Tieguanyin',
         name: '木柵鐵觀音',
-        category: '鐵觀音',
+        category: '烏龍茶',
         imageUrl: 'assets/products/Mucha_Tieguanyin.jpg', // 根據您提供的檔案名
         detailImages: [
           // 'assets/products/Mucha_Tieguanyin-detail1.jpg' // 請確認此圖片是否存在
@@ -96,7 +96,7 @@ export class ProductService {
       {
         id: 'Alishan_Jinxuan_Tea',
         name: '阿里山金萱',
-        category: '烏龍茶',
+        category: '青茶',
         imageUrl: 'assets/products/Alishan_Jinxuan_Tea.jpg', // 根據您提供的檔案名
         detailImages: [
           // 'assets/products/Alishan_Jinxuan_Tea-detail1.jpg' // 請確認此圖片是否存在
