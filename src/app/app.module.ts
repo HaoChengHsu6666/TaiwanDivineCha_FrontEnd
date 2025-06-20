@@ -11,6 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card'; // 導入 MatCardModule
+import { MatDialogModule } from '@angular/material/dialog'; // **重要：導入 MatDialogModule**
+
 
 // 元件
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -22,6 +24,7 @@ import { ProductService } from './core/services/product.service'; // 導入 Prod
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { FormsModule } from '@angular/forms'; // <-- 導入 FormsModule
+import { AuthModule } from './auth/auth.module'; // **導入 AuthModule**
 
 
 @NgModule({
@@ -44,7 +47,8 @@ import { FormsModule } from '@angular/forms'; // <-- 導入 FormsModule
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
-    MatCardModule // 添加 MatCardModule
+    MatCardModule, // 添加 MatCardModule
+    MatDialogModule, // **重要：為了使用 MatDialog 服務**
   ],
   providers: [
     provideAnimationsAsync(),

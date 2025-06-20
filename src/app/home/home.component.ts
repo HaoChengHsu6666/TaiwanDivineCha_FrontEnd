@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 
 @Component({
@@ -6,7 +6,7 @@ import { interval, Subscription } from 'rxjs';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
 
   // 輪播圖圖片路徑陣列 (請確保圖片存在於 src/assets/images/)
   // 假設您的圖片是 tea1.jpg, tea2.jpg, tea3.jpg
@@ -22,20 +22,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   currentBackground: string = ''; // 當前顯示的背景圖片路徑
   currentAnimationClass: string = 'fade-in'; // <--- 初始化為 fade-in // 要淡入淡出效果打開
 
-  // private autoSlideSubscription: Subscription | undefined; // 要縮放效果打開
-  // private slideIntervalTime: number = 3000; // 圖片切換間隔時間 // 要縮放效果打開
   private autoSlideSubscription: Subscription | undefined; // 要淡入淡出效果打開
-  private slideIntervalTime: number = 2000; // 4秒 // 要淡入淡出效果打開
+  private slideIntervalTime: number = 2000; // 2秒 // 要淡入淡出效果打開
 
   constructor() { }
 
   ngOnInit(): void {
     this.currentBackground = this.images[this.currentImageIndex]; // 初始化第一張圖片
     this.startAutoSlide(); // 啟動自動播放
-  }
-
-  ngOnDestroy(): void {
-    this.stopAutoSlide(); // 元件銷毀時停止自動播放
   }
 
   startAutoSlide(): void {

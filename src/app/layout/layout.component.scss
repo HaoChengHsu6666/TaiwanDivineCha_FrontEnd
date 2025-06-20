@@ -1,4 +1,5 @@
 .main-toolbar {
+  position: sticky;
   background-color: rgba(0, 0, 0, 0.7); // 半透明背景
   color: #fff;
   height: 80px; // 調整高度以符合圖片
@@ -142,7 +143,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10000;
+  z-index: 1001;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;

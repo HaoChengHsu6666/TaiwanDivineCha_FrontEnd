@@ -4,6 +4,7 @@ import { ProductService } from '../core/services/product.service'; // 確認路�
 import { Product } from '../core/models/product.model'; // 確認路徑正確
 import { Observable, EMPTY } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { Location } from '@angular/common'; // **引入 Location 服務**
 
 @Component({
   selector: 'app-product-detail',
@@ -16,7 +17,8 @@ export class ProductDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductService
+    private productService: ProductService,
+    private location: Location // **注入 Location 服務**
   ) { }
 
   ngOnInit(): void {
@@ -29,5 +31,10 @@ export class ProductDetailComponent implements OnInit {
         return EMPTY; // 如果沒有 id 則返回空
       })
     );
+  }
+
+  // **新增關閉方法**
+  closeProductDetail(): void {
+    this.location.back(); // 使用 Location 服務導航回上一頁
   }
 }

@@ -1,5 +1,7 @@
 /* src/app/product-detail/product-detail.component.scss */
+
 .product-detail-container {
+  position: relative; // **關鍵：確保容器有相對定位，以便子元素可以絕對定位**
   display: flex;
   flex-wrap: wrap;
   gap: 40px;
@@ -12,7 +14,36 @@
 
   @media (max-width: 768px) {
     flex-direction: column;
-    padding: 40px 20px;
+    padding: 40px 20px; // 小螢幕時調整 padding
+  }
+}
+
+.close-detail-button {
+  position: absolute; // **關閉按鈕絕對定位**
+  top: 20px;          // **調整為距離容器頂部的距離 (考慮到 padding 80px 50px)**
+  right: 20px;        // **調整為距離容器右側的距離 (考慮到 padding 80px 50px)**
+  z-index: 10;        // 確保按鈕在其他內容之上
+  background-color: rgba(255, 255, 255, 0.8); // 輕微透明背景，使其突出
+  border-radius: 50%; // 圓形按鈕
+  width: 50px;        // 固定寬度
+  height: 50px;       // 固定高度
+  display: flex;      // 使 mat-icon 居中
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); // 輕微陰影
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out; // 添加過渡效果
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 1); // 懸停時背景更不透明
+    transform: scale(1.1); // 懸停時輕微放大
+    cursor: pointer;
+  }
+
+  mat-icon {
+    font-size: 24px; // Mat Icon 尺寸
+    width: 24px;
+    height: 24px;
+    color: #555; // 圖示顏色
   }
 }
 
@@ -29,15 +60,15 @@
     display: flex;
     gap: 10px;
     margin-top: 15px;
-    overflow-x: auto; // 橫向滾動
+    overflow-x: auto;
     .thumbnail {
       width: 80px;
       height: 80px;
       object-fit: cover;
       border-radius: 4px;
       cursor: pointer;
-      border: 1px solid #eee;
-      transition: border-color 0.3s ease;
+      border: 2px solid transparent;
+      transition: border-color 0.2s ease-in-out;
       &:hover {
         border-color: #007bff;
       }
@@ -83,20 +114,21 @@
       li {
         font-size: 16px;
         color: #666;
-        margin-bottom: 5px;
-        &:before {
-          content: "• ";
-          color: #007bff; // 或您的品牌顏色
+        margin-bottom: 8px;
+        &:last-child {
+          margin-bottom: 0;
         }
       }
     }
   }
   .product-meta {
-    font-size: 16px;
-    color: #888;
+    display: flex;
+    gap: 20px;
     margin-bottom: 30px;
     p {
-      margin: 5px 0;
+      font-size: 16px;
+      color: #666;
+      margin: 0;
     }
   }
   .add-to-cart-button {
@@ -105,5 +137,16 @@
     mat-icon {
       margin-right: 8px;
     }
+  }
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+  .product-detail-container {
+    padding-top: 60px; // 在小螢幕上調整頂部填充，確保按鈕有足夠空間
+  }
+  .close-detail-button {
+    top: 10px; // 在小螢幕上調整距離
+    right: 10px;
   }
 }

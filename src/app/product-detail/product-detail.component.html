@@ -1,4 +1,8 @@
 <div class="product-detail-container" *ngIf="product$ | async as product">
+  <button mat-icon-button class="close-detail-button" (click)="closeProductDetail()">
+    <mat-icon>close</mat-icon>
+  </button>
+  
   <div class="product-images">
     <img [src]="product.imageUrl" alt="{{ product.name }}" class="main-image">
     <div class="thumbnail-images">

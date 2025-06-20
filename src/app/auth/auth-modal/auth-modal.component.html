@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>
+  歡迎來到好神茶廠
+  <button mat-icon-button class="close-button" (click)="onNoClick()">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+
+<mat-dialog-content>
+  <mat-tab-group animationDuration="0ms" [(selectedIndex)]="selectedTabIndex">
+    <mat-tab label="登入">
+      <app-login (forgotPassword)="navigateToForgotPassword()"></app-login>
+    </mat-tab>
+    <mat-tab label="註冊">
+      <!-- <app-register></app-register> -->
+    </mat-tab>
+  </mat-tab-group>
+</mat-dialog-content>

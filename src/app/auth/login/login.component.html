@@ -1,0 +1,61 @@
+<!-- src/app/auth/login/login.component.html -->
+
+<div class="login-container">
+  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email 帳號</mat-label>
+      <input matInput formControlName="email" placeholder="請輸入您的 Email" required>
+      <mat-error *ngIf="loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched">
+        Email 不得為空。
+      </mat-error>
+      <mat-error *ngIf="loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched">
+        請輸入有效的 Email 格式。
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>密碼</mat-label>
+      <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" placeholder="請輸入密碼" required>
+      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+        <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      <mat-error *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
+        密碼不得為空。
+      </mat-error>
+      <mat-error *ngIf="loginForm.get('password')?.hasError('minlength') && loginForm.get('password')?.touched">
+        密碼長度至少為 8 碼。
+      </mat-error>
+      <mat-error *ngIf="loginForm.get('password')?.hasError('pattern') && loginForm.get('password')?.touched">
+        密碼必須包含英文大小寫、數字、不得有特殊符號。
+      </mat-error>
+    </mat-form-field>
+
+    <div class="verification-code-container">
+      <mat-form-field appearance="outline" class="verification-input">
+        <mat-label>驗證碼</mat-label>
+        <input matInput formControlName="captcha" placeholder="請輸入驗證碼" required>
+        <mat-error *ngIf="loginForm.get('captcha')?.hasError('required') && loginForm.get('captcha')?.touched">
+          驗證碼不得為空。
+        </mat-error>
+        <mat-error *ngIf="loginForm.get('captcha')?.hasError('incorrectCaptcha') && loginForm.get('captcha')?.touched">
+          驗證碼錯誤。
+        </mat-error>
+      </mat-form-field>
+      <div class="captcha-display" (click)="generateCaptcha()">{{ generatedCaptcha }}</div>
+    </div>
+
+    <mat-checkbox formControlName="rememberMe" class="remember-me-checkbox">保持登入</mat-checkbox>
+
+    <div class="action-buttons">
+      <button mat-flat-button color="primary" type="submit" [disabled]="loginForm.invalid" class="login-button">
+        登入
+      </button>
+      <a class="forgot-password-link" (click)="onForgotPassword()">忘記密碼?</a>
+    </div>
+
+    <!-- 登入失敗通用提示 -->
+    <div *ngIf="loginError" class="login-error-message">
+      {{ loginError }}
+    </div>
+  </form>
+</div>

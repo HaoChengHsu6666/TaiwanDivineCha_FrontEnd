@@ -1,0 +1,52 @@
+/* src/app/auth/auth-modal/auth-modal.component.scss */
+
+// 可以選擇在全局樣式或這個組件的樣式中定義 Mat Dialog 的整體寬度
+// 如果希望模態框更寬，可以在這裡調整，或者在 open 方法中傳遞 width
+// .mat-mdc-dialog-container .mat-mdc-dialog-surface {
+//   width: 500px; // 範例寬度
+// }
+
+.mat-mdc-dialog-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px; // Angular Material 預設內邊距
+  margin: 0; // 移除預設的 margin-bottom
+  border-bottom: 1px solid #eee; // 分隔線
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.close-button {
+  margin-left: auto; // 推到右邊
+  color: #555;
+  &:hover {
+    color: #000;
+  }
+}
+
+.mat-mdc-dialog-content {
+  padding: 24px; // 內容內邊距
+  overflow: hidden; // 防止內容溢出
+}
+
+// 調整 tab 的樣式 (可選)
+.mat-tab-group {
+  .mat-tab-label-container {
+    margin-bottom: 20px; // 頁籤和內容間距
+  }
+  .mat-tab-label {
+    min-width: 120px; // 頁籤最小寬度
+    padding: 0 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+    &:hover {
+      color: #000;
+    }
+  }
+  .mat-tab-label.mat-tab-label-active {
+    color: #007bff; // 選中頁籤的顏色
+  }
+}
