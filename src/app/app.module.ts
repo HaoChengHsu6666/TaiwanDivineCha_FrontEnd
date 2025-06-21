@@ -35,7 +35,7 @@ import { AuthModule } from './auth/auth.module'; // **導入 AuthModule**
     // ContactComponent,
     // AboutComponent,
     ProductDetailComponent,
-    ProductListComponent
+    ProductListComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +49,7 @@ import { AuthModule } from './auth/auth.module'; // **導入 AuthModule**
     MatMenuModule,
     MatCardModule, // 添加 MatCardModule
     MatDialogModule, // **重要：為了使用 MatDialog 服務**
+    AuthModule // **導入您的 AuthModule**
   ],
   providers: [
     provideAnimationsAsync(),
