@@ -3,18 +3,20 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators'; // 用於模擬網絡延遲
-// import { HttpClient } from '@angular/common/http'; // 如果連接後端，需要這個
+import { HttpClient } from '@angular/common/http'; // 如果連接後端，需要這個
+import { environment } from '../../../environments/environment'; // 假設您有環境配置
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+  private apiUrl = environment.apiUrl; // 假設您的 API 基本 URL 在 environment.ts 中
+
   // 模擬已註冊的 Email 列表
   private registeredEmails = ['test@example.com', 'admin@example.com'];
 
-  constructor() { }
-  // constructor(private http: HttpClient) { } // 如果連接後端，解開註解
+  constructor(private http: HttpClient) { } // 如果連接後端，解開註解
 
   // 模擬登入請求
   login(email: string, password: string): Observable<any> {
@@ -66,6 +68,12 @@ export class AuthService {
     console.log(`模擬檢查 Email 是否存在: ${email}`);
     const exists = this.registeredEmails.includes(email);
     return of(exists).pipe(delay(300)); // 模擬網絡延遲
+  }
+
+    // 新增的重設密碼方法
+  resetPassword(token: string, newPassword: string): Observable<any> {
+    const body = { token, newPassword };
+    return this.http.post(`${this.apiUrl}/reset-password`, body); // 確保後端端點匹配
   }
 
   // 未來您可能還會添加其他方法，例如：

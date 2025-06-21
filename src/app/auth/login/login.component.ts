@@ -2,7 +2,7 @@
 
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { AuthService } from '../services/auth.service'; // 稍後創建
+import { AuthService } from '../../core/services/auth.service'; // 稍後創建
 import { MatSnackBar } from '@angular/material/snack-bar'; // 用於顯示提示訊息
 
 @Component({
