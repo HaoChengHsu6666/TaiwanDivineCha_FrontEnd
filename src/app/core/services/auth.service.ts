@@ -1,86 +1,164 @@
-// src/app/auth/services/auth.service.ts
-
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-import { delay } from 'rxjs/operators'; // 用於模擬網絡延遲
-import { HttpClient } from '@angular/common/http'; // 如果連接後端，需要這個
-import { environment } from '../../../environments/environment'; // 假設您有環境配置
+import { catchError, map, tap } from 'rxjs/operators'; // 導入 tap
+import { environment } from '../../../environments/environment';
+
+// 定義登入回應的介面
+interface AuthResponse {
+  jwt?: string; // JWT Token，可能是可選的，或者您也可以定義為 string
+  user?: any; // 用戶資訊，這裡先用 any，如果未來有 User 介面可以替換
+  message?: string; // 例如，登入成功訊息
+  // 根據您的後端實際返回的內容，添加其他屬性
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private apiUrl = environment.apiUrl + '/auth';
 
-  private apiUrl = environment.apiUrl; // 假設您的 API 基本 URL 在 environment.ts 中
-
-  // 模擬已註冊的 Email 列表
-  private registeredEmails = ['test@example.com', 'admin@example.com'];
-
-  constructor(private http: HttpClient) { } // 如果連接後端，解開註解
-
-  // 模擬登入請求
-  login(email: string, password: string): Observable<any> {
-    // **注意：這裡僅為模擬，實際應用中應調用後端 API**
-    console.log(`模擬登入嘗試 - Email: ${email}, 密碼: ${password}`);
-
-    // 模擬成功的登入
-    if (email === 'test@gmail.com' && password === 'Password123') {
-      return of({
-        success: true,
-        message: '登入成功！',
-        token: 'mock-jwt-token-123',
-        user: { email: email }
-      }).pipe(delay(1000)); // 模擬網絡延遲 1 秒
-    } else {
-      // 模擬失敗的登入
-      return throwError(() => new Error('Email 或密碼不正確。')).pipe(delay(1000));
-    }
-  }
+  constructor(private http: HttpClient) { }
 
   /**
-   * 模擬發送重設密碼 Email
-   * @param email 用戶的 Email 地址
+   * 註冊新用戶並發送驗證郵件
+   * @param email 用戶的電子郵件
    */
-  sendResetPasswordEmail(email: string): Observable<any> {
-    // **注意：這裡僅為模擬，實際應用中應調用後端 API**
-    // return this.http.post('/api/auth/forgot-password', { email });
-
-    console.log(`模擬發送重設密碼 Email 到: ${email}`);
-    // 模擬成功發送，只有當 Email 存在時才成功
-    if (this.registeredEmails.includes(email)) {
-      // 實際應用中，後端會生成一個帶有 token 的重設密碼連結並發送
-      return of({ success: true, message: '重設密碼連結已發送。' }).pipe(delay(1500));
-    } else {
-      // 模擬 Email 未註冊的錯誤
-      return throwError(() => new Error('此 Email 尚未註冊，請檢查。')).pipe(delay(1500));
-    }
+  register(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, { email }).pipe(
+      catchError(this.handleError)
+    );
   }
 
   /**
-   * 模擬檢查 Email 是否已存在/已註冊
-   * @param email 要檢查的 Email 地址
-   * @returns Observable<boolean> 如果 Email 已註冊則為 true，否則為 false
+   * 檢查電子郵件是否已註冊
+   * @param email 用戶的電子郵件
+   * @returns Observable<boolean> true if email exists, false otherwise
+   * 後端 API 應返回 { exists: true/false } 或直接 200/409 (Conflict)
    */
   checkEmailExists(email: string): Observable<boolean> {
-    // **注意：這裡僅為模擬，實際應用中應調用後端 API**
-    // return this.http.get<boolean>(`/api/auth/check-email-exists?email=${email}`);
-
-    console.log(`模擬檢查 Email 是否存在: ${email}`);
-    const exists = this.registeredEmails.includes(email);
-    return of(exists).pipe(delay(300)); // 模擬網絡延遲
+    return this.http.get<{ exists: boolean }>(`${this.apiUrl}/check-email?email=${email}`).pipe(
+      map(response => response.exists),
+      catchError(error => {
+        // 如果後端在Email存在時返回 409 Conflict，也可以這樣處理
+        if (error.status === 409) {
+          return of(true); // 視為Email已存在
+        }
+        console.error('Error checking email existence:', error);
+        return of(false); // 其他錯誤或不存在
+      })
+    );
   }
 
-    // 新增的重設密碼方法
+  /**
+   * 獲取驗證碼圖片 URL
+   * 假設後端 /api/auth/captcha 返回一個圖片 URL (data:image/png;base64,...)
+   */
+  getCaptchaImageUrl(): Observable<string> {
+    return this.http.get(`${this.apiUrl}/captcha`, { responseType: 'text' }).pipe( // 假設後端直接返回 base64 字串或 URL
+      map(response => {
+        // 如果後端返回的是 base64 編碼的圖片字串，您需要確保它是 'data:image/png;base64,' 開頭
+        // 否則，如果後端直接返回圖片 URL，則直接返回 response
+        // 這裡假設後端返回的就是可以直接用於 img src 的字符串
+        return response;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+
+  /**
+   * 驗證帳戶激活Token
+   * @param token 激活Token
+   * 後端 API 應返回 JWT Token 和用戶信息，以便前端自動登入
+   */
+  verifyEmail(token: string): Observable<AuthResponse> {
+    return this.http.get<AuthResponse>(`${this.apiUrl}/verify-email?token=${token}`).pipe(
+      tap(response => {
+        if (response && response.jwt) {
+          localStorage.setItem('authToken', response.jwt);
+          localStorage.setItem('currentUser', JSON.stringify(response.user)); // 假設後端返回user信息
+        }
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  /**
+   * 登入方法
+   * @param email
+   * @param password
+   * @param captcha
+   * 後端 API 應返回 JWT Token 和用戶信息
+   */
+  login(credentials: { email: string, password: string, captcha: string}): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
+      tap(response => {
+        if (response && response.jwt) {
+          localStorage.setItem('authToken', response.jwt);
+          localStorage.setItem('currentUser', JSON.stringify(response.user)); // 假設後端返回user信息
+        }
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  /**
+   * 發送重設密碼 Email
+   * @param email 用戶的電子郵件
+   */
+  sendResetPasswordEmail(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/forgot-password`, { email }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  /**
+   * 重設密碼
+   * @param token 重設密碼 Token
+   * @param newPassword 新密碼
+   */
   resetPassword(token: string, newPassword: string): Observable<any> {
-    const body = { token, newPassword };
-    return this.http.post(`${this.apiUrl}/reset-password`, body); // 確保後端端點匹配
+    return this.http.post(`${this.apiUrl}/reset-password`, { token, newPassword }).pipe(
+      catchError(this.handleError)
+    );
   }
 
-  // 未來您可能還會添加其他方法，例如：
-  // register(userData: any): Observable<any> { ... }
-  // sendResetPasswordEmail(email: string): Observable<any> { ... }
-  // resetPassword(newPassword: string, token: string): Observable<any> { ... }
-  // checkEmailExists(email: string): Observable<boolean> { ... }
-  // activateAccount(token: string): Observable<any> { ... }
+  // 輔助錯誤處理
+  private handleError(error: any) {
+    let errorMessage = '發生未知錯誤。';
+    if (error.error instanceof ErrorEvent) {
+      // Client-side error
+      errorMessage = `錯誤: ${error.error.message}`;
+    } else {
+      // Server-side error
+      if (error.status) {
+        errorMessage = `錯誤碼: ${error.status}`;
+      }
+      if (error.error && error.error.message) {
+        errorMessage = error.error.message;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+    }
+    console.error('API 請求失敗:', errorMessage, error);
+    return throwError(() => new Error(errorMessage)); // 使用工廠函數返回錯誤
+  }
 
+  // 取得 JWT Token
+  getToken(): string | null {
+    return localStorage.getItem('authToken');
+  }
+
+  // 檢查用戶是否登入
+  isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
+
+  // 登出
+  logout(): void {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('currentUser');
+    // 您可能還需要導航到登入頁面或主頁
+  }
 }

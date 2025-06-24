@@ -11,7 +11,7 @@ import { AuthModalComponent } from './auth-modal/auth-modal.component';
 // import { ForgotPasswordComponent } from './forgot-password/forgot-password.component'; // 尚未創建，稍後創建
 // import { ResetPasswordComponent } from './reset-password/reset-password.component'; // 尚未創建，稍後創建
 // import { ActivationSuccessComponent } from './activation-success/activation-success.component'; // 尚未創建，稍後創建
-import { LoginComponent } from './login/login.component'; // **用於提示訊息 (如登入失敗)**
+// import { LoginComponent } from './login/login.component'; // **用於提示訊息 (如登入失敗)**
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component'; // 之前修正 ForgotPasswordComponent 用的
 
@@ -32,7 +32,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; /
 @NgModule({
   declarations: [
     AuthModalComponent,
-    LoginComponent,
+    // LoginComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
     // RegisterComponent, // 稍後創建

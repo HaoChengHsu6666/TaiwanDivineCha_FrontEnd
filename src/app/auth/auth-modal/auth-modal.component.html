@@ -1,17 +1,85 @@
-<h2 mat-dialog-title>
-  歡迎來到好神茶廠
-  <button mat-icon-button class="close-button" (click)="onNoClick()">
-    <mat-icon>close</mat-icon>
-  </button>
-</h2>
+<h2 mat-dialog-title>帳戶</h2>
 
 <mat-dialog-content>
-  <mat-tab-group animationDuration="0ms" [(selectedIndex)]="selectedTabIndex">
+  <mat-tab-group [selectedIndex]="selectedTabIndex" (selectedIndexChange)="selectedTabIndex = $event">
     <mat-tab label="登入">
-      <app-login (forgotPassword)="navigateToForgotPassword()"></app-login>
+      <div class="tab-content">
+        <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>電子郵件</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="您的電子郵件">
+            <mat-error *ngIf="loginEmailControl?.hasError('required') && loginEmailControl?.touched">
+              電子郵件是必填項。
+            </mat-error>
+            <mat-error *ngIf="loginEmailControl?.hasError('email') && loginEmailControl?.touched">
+              請輸入有效的電子郵件格式。
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>密碼</mat-label>
+            <input matInput type="password" formControlName="password" placeholder="您的密碼">
+            <mat-error *ngIf="loginPasswordControl?.hasError('required') && loginPasswordControl?.touched">
+              密碼是必填項。
+            </mat-error>
+            <mat-error *ngIf="loginPasswordControl?.hasError('minlength') && loginPasswordControl?.touched">
+              密碼至少需要 {{ loginPasswordControl?.errors?.['minlength']?.requiredLength }} 個字符。
+            </mat-error>
+          </mat-form-field>
+
+          <div class="captcha-container">
+            <mat-form-field appearance="fill" class="captcha-input-field">
+              <mat-label>驗證碼</mat-label>
+              <input matInput formControlName="captcha" placeholder="輸入驗證碼">
+              <mat-error *ngIf="loginForm.get('captcha')?.hasError('required') && loginForm.get('captcha')?.touched">
+                驗證碼是必填項。
+              </mat-error>
+            </mat-form-field>
+            <div class="captcha-image-wrapper">
+              <img [src]="captchaImageUrl" alt="驗證碼" class="captcha-image" (click)="refreshCaptcha()">
+              <button mat-icon-button (click)="refreshCaptcha()" type="button" class="refresh-captcha-button">
+                <mat-icon>refresh</mat-icon>
+              </button>
+            </div>
+          </div>
+          <a (click)="goToForgotPassword()" class="forgot-password-link">忘記密碼？</a>
+
+          <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid || loginLoading" class="full-width">
+            <span *ngIf="!loginLoading">登入</span>
+            <mat-spinner *ngIf="loginLoading" [diameter]="20" color="accent"></mat-spinner>
+          </button>
+        </form>
+      </div>
     </mat-tab>
+
     <mat-tab label="註冊">
-      <!-- <app-register></app-register> -->
+      <div class="tab-content">
+        <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>電子郵件</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="輸入您的電子郵件">
+            <mat-error *ngIf="registerEmailControl?.hasError('required') && registerEmailControl?.touched">
+              電子郵件是必填項。
+            </mat-error>
+            <mat-error *ngIf="registerEmailControl?.hasError('email') && registerEmailControl?.touched">
+              請輸入有效的電子郵件格式。
+            </mat-error>
+            <mat-error *ngIf="registerEmailControl?.hasError('emailTaken') && registerEmailControl?.touched">
+              此電子郵件已被註冊，請直接登入。
+            </mat-error>
+            <mat-spinner *ngIf="registerLoading && registerEmailControl?.pending" [diameter]="20"></mat-spinner>
+          </mat-form-field>
+
+          <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid || registerLoading" class="full-width">
+            <span *ngIf="!registerLoading">註冊並發送開通郵件</span>
+            <mat-spinner *ngIf="registerLoading" [diameter]="20" color="accent"></mat-spinner>
+          </button>
+        </form>
+      </div>
     </mat-tab>
   </mat-tab-group>
 </mat-dialog-content>
+
+<mat-dialog-actions [align]="'end'">
+  <button mat-button (click)="onNoClick()">關閉</button>
+</mat-dialog-actions>

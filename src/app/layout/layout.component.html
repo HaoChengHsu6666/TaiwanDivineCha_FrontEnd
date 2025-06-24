@@ -13,21 +13,16 @@
       <button mat-menu-item [routerLink]="['/products']" [queryParams]="{ category: '青茶' }">青茶</button>
       <button mat-menu-item [routerLink]="['/products']" [queryParams]="{ category: '烏龍茶' }">烏龍茶</button>
       <button mat-menu-item [routerLink]="['/products']" [queryParams]="{ category: '紅茶' }">紅茶</button>
-      <button mat-menu-item [routerLink]="['/products']">所有茶品</button> </mat-menu>
+      <button mat-menu-item [routerLink]="['/products']">所有茶品</button>
+    </mat-menu>
     <button mat-button routerLink="/contact">聯絡我們及匯款</button>
     <button mat-button [matMenuTriggerFor]="aboutMenu">關於好神</button>
     <mat-menu #aboutMenu="matMenu">
       <button mat-menu-item routerLink="/about">品牌故事</button>
-      <button mat-menu-item routerLink="/history">發展歷史</button>
-    </mat-menu>
-    <button mat-button [matMenuTriggerFor]="moreMenu">更多</button>
-    <mat-menu #moreMenu="matMenu">
-      <button mat-menu-item routerLink="/news">最新消息</button>
       <button mat-menu-item routerLink="/faq">常見問題</button>
     </mat-menu>
   </div>
 
-  <span class="navbar-spacer"></span>
   <div class="navbar-right">
     <button mat-icon-button (click)="toggleSearchOverlay()">
       <mat-icon>search</mat-icon>
@@ -35,9 +30,14 @@
     <button mat-icon-button>
       <mat-icon>shopping_cart</mat-icon>
     </button>
-    <button mat-icon-button (click)="openAuthModal()">
-      <mat-icon>person</mat-icon>
+
+    <button mat-icon-button *ngIf="!authService.isLoggedIn()" (click)="openAuthModal(0)"> <mat-icon>person_outline</mat-icon>
     </button>
+    <button mat-icon-button *ngIf="authService.isLoggedIn()" [matMenuTriggerFor]="userMenu"> <mat-icon>person</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item routerLink="/profile">個人中心</button> <button mat-menu-item (click)="logout()">登出</button>
+    </mat-menu>
   </div>
 </mat-toolbar>
 
@@ -48,10 +48,9 @@
       <mat-icon>close</mat-icon>
     </button>
     <div class="search-input-container">
-      <input type="text" 
-        placeholder="Search" 
-        [(ngModel)]="searchTerm" 
-        (keyup)="onSearchInput()" 
+      <input type="text"
+        placeholder="搜尋" [(ngModel)]="searchTerm"
+        (keyup)="onSearchInput()"
         class="search-input">
       <button mat-icon-button class="search-button" (click)="executeSearch()">
         <mat-icon>search</mat-icon>
@@ -61,23 +60,15 @@
     <div class="search-results" *ngIf="searchTerm && filteredProducts.length > 0">
       <div *ngFor="let product of filteredProducts" class="search-result-item">
         <a [routerLink]="['/product', product.id]" (click)="toggleSearchOverlay()">
-          <!-- <img [src]="product.imageUrl" alt="{{ product.name }}" class="search-result-image"> -->
           <div class="search-result-info">
             <h4>{{ product.name }}</h4>
-            <!-- <p class="search-result-price">NT$ {{ product.price }}</p> -->
-          </div>
+            </div>
         </a>
       </div>
     </div>
     <div class="no-results" *ngIf="searchTerm && filteredProducts.length === 0">
-      沒有找到符合 "{{ searchTerm }}" 的茶品。
-    </div>
+      沒有找到相關的茶品。 </div>
   </div>
 </div>
 
-
-
 <router-outlet></router-outlet>
-
-<footer class="main-footer">
-  </footer>

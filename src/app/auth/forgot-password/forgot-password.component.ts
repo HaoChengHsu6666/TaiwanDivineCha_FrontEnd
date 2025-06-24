@@ -4,11 +4,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AsyncValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router'; // 導入 Router
+import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { map, catchError, debounceTime, take } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog'; // 導入 MatDialog
-import { AuthModalComponent } from '../auth-modal/auth-modal.component'; // 導入 AuthModalComponent
+// 移除 MatDialog 和 AuthModalComponent 的導入，因為現在是獨立頁面
+// import { MatDialog } from '@angular/material/dialog';
+// import { AuthModalComponent } from '../auth-modal/auth-modal.component';
 
 @Component({
   selector: 'app-forgot-password',
@@ -19,43 +20,46 @@ export class ForgotPasswordComponent implements OnInit {
   forgotPasswordForm!: FormGroup;
   successMessage: string = '';
   errorMessage: string = '';
+  isLoading: boolean = false; // 添加加載狀態
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private _snackBar: MatSnackBar,
+    private snackBar: MatSnackBar,
     private router: Router,
-    private dialog: MatDialog // 注入 MatDialog
+    // private dialog: MatDialog // 移除
   ) { }
 
   ngOnInit(): void {
     this.forgotPasswordForm = this.fb.group({
       email: ['',
         [Validators.required, Validators.email],
-        [this.emailExistsValidator()] // 異步驗證器，檢查 Email 是否已註冊
+        [this.emailExistsValidator()] // 非同步驗證器
       ]
     });
   }
 
-  // 異步驗證器：檢查 Email 是否已註冊
-  // 需求：Email 必須是 "已註冊過" 的，才能發送重設密碼信
-  private emailExistsValidator(): AsyncValidatorFn {
-    return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+  // 自定義非同步驗證器：檢查 Email 是否已存在（重設密碼需要 Email 存在）
+  emailExistsValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
       const email = control.value;
-      if (!email || control.hasError('email')) { // 如果 Email 為空或格式不正確，則不執行後續驗證
+      if (!email || !Validators.email(control)) {
         return of(null);
       }
 
-      // debounceTime 避免每次按鍵都觸發請求
+      this.isLoading = true; // 開始加載
       return this.authService.checkEmailExists(email).pipe(
-        debounceTime(500), // 等待 500ms 後再發送請求
-        take(1),           // 只取第一個結果
+        debounceTime(500),
+        take(1),
         map(exists => {
-          // 如果 exists 為 true，表示 Email 已註冊，則驗證通過 (返回 null)
+          this.isLoading = false; // 結束加載
           // 如果 exists 為 false，表示 Email 未註冊，則驗證失敗 (返回 { emailNotRegistered: true })
           return exists ? null : { emailNotRegistered: true };
         }),
-        catchError(() => of(null)) // 捕獲錯誤，避免驗證器崩潰，並視為成功 (或根據需求處理錯誤狀態)
+        catchError(() => {
+          this.isLoading = false; // 結束加載
+          return of(null); // 捕獲錯誤，避免驗證器崩潰，並視為成功 (或根據需求處理錯誤狀態)
+        })
       );
     };
   }
@@ -65,35 +69,31 @@ export class ForgotPasswordComponent implements OnInit {
     this.errorMessage = '';
 
     if (this.forgotPasswordForm.invalid) {
-      this.forgotPasswordForm.markAllAsTouched(); // 標記所有欄位為 touched，顯示錯誤訊息
-      this._snackBar.open('請檢查 Email 欄位。', '關閉', { duration: 3000 });
+      this.forgotPasswordForm.markAllAsTouched();
+      this.snackBar.open('請檢查 Email 欄位。', '關閉', { duration: 3000, panelClass: ['error-snackbar'] });
       return;
     }
 
+    this.isLoading = true; // 設置加載狀態
+
     const email = this.forgotPasswordForm.get('email')?.value;
 
-    // 調用 AuthService 發送重設密碼 Email
-    this.authService.sendResetPasswordEmail(email).subscribe(
-      response => {
-        this.successMessage = '重設密碼連結已發送到您的 Email，請檢查收件箱。';
-        this._snackBar.open(this.successMessage, '關閉', { duration: 5000 });
+    this.authService.sendResetPasswordEmail(email).subscribe({
+      next: (response) => {
+        this.successMessage = response.message || '重設密碼連結已發送到您的 Email，請檢查收件箱。';
+        this.snackBar.open(this.successMessage, '關閉', { duration: 5000, panelClass: ['success-snackbar'] });
         this.forgotPasswordForm.reset(); // 清空表單
+        this.isLoading = false;
       },
-      error => {
+      error: (error) => {
         this.errorMessage = error.message || '發送請求失敗，請稍後再試。';
-        this._snackBar.open(this.errorMessage, '關閉', { duration: 5000, panelClass: ['snackbar-error'] });
+        this.snackBar.open(this.errorMessage, '關閉', { duration: 5000, panelClass: ['error-snackbar'] });
+        this.isLoading = false;
       }
-    );
+    });
   }
 
-  goToLogin(): void {
-    // 關閉當前頁面 (如果這個組件被嵌入到特定路由中，就直接導航)
-    // 然後打開登入模態框
-    this.router.navigate(['/']); // 或者其他您希望的基礎路由
-    this.dialog.open(AuthModalComponent, {
-      width: '500px',
-      panelClass: 'auth-modal-panel',
-      data: { selectedTab: 0 } // 可以傳遞資料讓 AuthModalComponent 自動選擇登入頁籤
-    });
+  get emailControl() {
+    return this.forgotPasswordForm.get('email');
   }
 }

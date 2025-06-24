@@ -10,8 +10,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatCardModule } from '@angular/material/card'; // 導入 MatCardModule
-import { MatDialogModule } from '@angular/material/dialog'; // **重要：導入 MatDialogModule**
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field'; // 新增
+import { MatInputModule } from '@angular/material/input'; // 新增
+import { MatTabsModule } from '@angular/material/tabs'; // 新增
 
 
 // 元件
@@ -49,7 +54,12 @@ import { AuthModule } from './auth/auth.module'; // **導入 AuthModule**
     MatMenuModule,
     MatCardModule, // 添加 MatCardModule
     MatDialogModule, // **重要：為了使用 MatDialog 服務**
-    AuthModule // **導入您的 AuthModule**
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTabsModule,
+    AuthModule, // **導入您的 AuthModule**
   ],
   providers: [
     provideAnimationsAsync(),

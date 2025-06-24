@@ -1,52 +1,95 @@
-/* src/app/auth/auth-modal/auth-modal.component.scss */
+// src/app/auth/auth-modal/auth-modal.component.scss
+.tab-content {
+  padding: 20px;
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; // 表單元素間距
 
-// 可以選擇在全局樣式或這個組件的樣式中定義 Mat Dialog 的整體寬度
-// 如果希望模態框更寬，可以在這裡調整，或者在 open 方法中傳遞 width
-// .mat-mdc-dialog-container .mat-mdc-dialog-surface {
-//   width: 500px; // 範例寬度
-// }
+    .full-width {
+      width: 100%;
+    }
 
-.mat-mdc-dialog-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px; // Angular Material 預設內邊距
-  margin: 0; // 移除預設的 margin-bottom
-  border-bottom: 1px solid #eee; // 分隔線
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-}
+    button[type="submit"] {
+      height: 48px;
+      font-size: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px; // 按鈕文字和 spinner 間距
+    }
 
-.close-button {
-  margin-left: auto; // 推到右邊
-  color: #555;
-  &:hover {
-    color: #000;
-  }
-}
-
-.mat-mdc-dialog-content {
-  padding: 24px; // 內容內邊距
-  overflow: hidden; // 防止內容溢出
-}
-
-// 調整 tab 的樣式 (可選)
-.mat-tab-group {
-  .mat-tab-label-container {
-    margin-bottom: 20px; // 頁籤和內容間距
-  }
-  .mat-tab-label {
-    min-width: 120px; // 頁籤最小寬度
-    padding: 0 10px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #555;
-    &:hover {
-      color: #000;
+    .forgot-password-link {
+      align-self: flex-end; // 右對齊
+      font-size: 14px;
+      color: #3f51b5; // Material Primary Color
+      text-decoration: none;
+      cursor: pointer;
+      margin-top: -10px; // 微調位置
+      margin-bottom: 5px;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
-  .mat-tab-label.mat-tab-label-active {
-    color: #007bff; // 選中頁籤的顏色
+}
+
+// 根據您的截圖，AuthModalComponent 自身可能也有樣式
+mat-dialog-content {
+  min-width: 350px; // 確保足夠寬度
+  padding-bottom: 0 !important; // 移除預設 padding，讓 tab 貼合邊緣
+}
+
+mat-dialog-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #3f51b5;
+  padding-bottom: 10px;
+}
+
+// Custom snackbar styles (確保這些樣式全局或在組件樣式中可用)
+.success-snackbar {
+  background-color: #4CAF50 !important; // Green
+  color: white !important;
+}
+
+.error-snackbar {
+  background-color: #f44336 !important; // Red
+  color: white !important;
+}
+
+.captcha-container {
+  display: flex;
+  align-items: center;
+  gap: 15px; // 調整間距
+  margin-bottom: 20px;
+
+  .captcha-input-field {
+    flex: 1; // 讓輸入框佔據更多空間
+  }
+
+  .captcha-image-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc; // 給圖片一個邊框
+    border-radius: 4px;
+    overflow: hidden; // 確保圖片在圓角內
+  }
+
+  .captcha-image {
+    height: 40px; // 調整驗證碼圖片高度
+    width: auto; // 保持比例
+    cursor: pointer; // 提示可點擊刷新
+    display: block; // 移除圖片底部多餘空間
+  }
+
+  .refresh-captcha-button {
+    margin-left: -5px; // 調整按鈕位置，使其與圖片更靠近
+    border-radius: 0 4px 4px 0; // 右側圓角
+    background-color: #f0f0f0;
+    &:hover {
+      background-color: #e0e0e0;
+    }
   }
 }

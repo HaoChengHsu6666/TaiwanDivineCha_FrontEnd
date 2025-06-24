@@ -3,8 +3,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service'; // 確保路徑正確
-import { MatSnackBar } from '@angular/material/snack-bar'; // 用於顯示提示訊息
+import { AuthService } from '../../core/services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-reset-password',
@@ -23,7 +23,7 @@ export class ResetPasswordComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private snackBar: MatSnackBar // 注入 MatSnackBar
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -33,20 +33,18 @@ export class ResetPasswordComponent implements OnInit {
       if (!this.token) {
         this.message = '無效的重設密碼連結。';
         this.snackBar.open(this.message, '關閉', { duration: 5000, panelClass: ['error-snackbar'] });
-        // 可以考慮將用戶導向錯誤頁面或忘記密碼頁面
-        // this.router.navigate(['/auth/forgot-password']);
+        // 如果沒有 token，可以禁用表單或重定向
+        this.resetPasswordForm.disable();
       }
     });
 
     this.resetPasswordForm = this.fb.group({
-      newPassword: ['', [Validators.required, Validators.minLength(6)]],
+      newPassword: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)]], // 至少8位，包含大小寫字母、數字和特殊字符
       confirmPassword: ['', Validators.required]
-    }, {
-      validators: this.passwordMatchValidator // 添加自定義驗證器
-    });
+    }, { validators: this.passwordMatchValidator });
   }
 
-  // 自定義驗證器：檢查兩次密碼是否一致
+  // 自定義驗證器：檢查密碼是否匹配
   passwordMatchValidator: ValidatorFn = (control: AbstractControl): { [key: string]: boolean } | null => {
     const newPassword = control.get('newPassword');
     const confirmPassword = control.get('confirmPassword');
@@ -59,7 +57,8 @@ export class ResetPasswordComponent implements OnInit {
 
   onSubmit(): void {
     if (this.resetPasswordForm.invalid) {
-      this.resetPasswordForm.markAllAsTouched(); // 觸發所有欄位的驗證訊息顯示
+      this.resetPasswordForm.markAllAsTouched();
+      this.snackBar.open('請檢查密碼欄位。', '關閉', { duration: 3000, panelClass: ['error-snackbar'] });
       return;
     }
 
@@ -78,15 +77,23 @@ export class ResetPasswordComponent implements OnInit {
       next: (response) => {
         this.message = response.message || '密碼已成功重設！請使用新密碼登入。';
         this.snackBar.open(this.message, '關閉', { duration: 5000, panelClass: ['success-snackbar'] });
-        this.router.navigate(['/auth/login']); // 重設成功後導向登入頁面
+        this.isLoading = false;
+        this.router.navigate(['/']); // 重設成功後導航到首頁，或可以引導用戶重新打開 AuthModalComponent 到登入頁籤
+        // this.dialog.open(AuthModalComponent, { data: { selectedTabIndex: 0 } }); // 或者這樣
       },
       error: (error) => {
-        this.isLoading = false;
-        // 假設後端錯誤會返回一個 error.message
-        this.message = error.error?.message || '重設密碼失敗。請稍後再試或重新申請連結。';
-        console.error('Reset password error:', error);
+        this.message = error.message || '重設密碼失敗，連結可能已過期或無效。';
         this.snackBar.open(this.message, '關閉', { duration: 5000, panelClass: ['error-snackbar'] });
+        this.isLoading = false;
       }
     });
+  }
+
+  get newPasswordControl() {
+    return this.resetPasswordForm.get('newPassword');
+  }
+
+  get confirmPasswordControl() {
+    return this.resetPasswordForm.get('confirmPassword');
   }
 }
