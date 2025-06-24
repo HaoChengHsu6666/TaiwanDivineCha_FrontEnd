@@ -29,7 +29,7 @@ import { ProductService } from './core/services/product.service'; // 導入 Prod
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { FormsModule } from '@angular/forms'; // <-- 導入 FormsModule
-import { AuthModule } from './auth/auth.module'; // **導入 AuthModule**
+import { AuthModule } from './auth/auth.module';
 
 
 @NgModule({

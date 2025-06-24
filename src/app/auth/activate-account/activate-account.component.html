@@ -1,0 +1,17 @@
+<!-- src/app/auth/activate-account/activate-account.component.html -->
+
+<mat-card class="activate-account-card">
+  <mat-card-header>
+    <mat-card-title>帳戶激活</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div *ngIf="isLoading" class="loading-spinner">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>{{ message }}</p>
+    </div>
+    <div *ngIf="!isLoading" class="message-container">
+      <p>{{ message }}</p>
+      <button mat-raised-button color="primary" routerLink="/">返回首頁</button>
+    </div>
+  </mat-card-content>
+</mat-card>

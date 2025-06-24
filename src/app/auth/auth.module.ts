@@ -6,14 +6,14 @@ import { ReactiveFormsModule } from '@angular/forms'; // **導入 ReactiveFormsM
 
 import { AuthRoutingModule } from './auth-routing.module';
 import { AuthModalComponent } from './auth-modal/auth-modal.component';
-// import { LoginComponent } from './login/login.component'; // 尚未創建，稍後創建
-// import { RegisterComponent } from './register/register.component'; // 尚未創建，稍後創建
 // import { ForgotPasswordComponent } from './forgot-password/forgot-password.component'; // 尚未創建，稍後創建
 // import { ResetPasswordComponent } from './reset-password/reset-password.component'; // 尚未創建，稍後創建
 // import { ActivationSuccessComponent } from './activation-success/activation-success.component'; // 尚未創建，稍後創建
-// import { LoginComponent } from './login/login.component'; // **用於提示訊息 (如登入失敗)**
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component'; // 之前修正 ForgotPasswordComponent 用的
+import { ActivateAccountComponent } from './activate-account/activate-account.component';
+import { SetInitialPasswordComponent } from './set-initial-password/set-initial-password.component';
+import { RegistrationSuccessComponent } from './registration-success/registration-success.component';
 
 
 // Angular Material 模組
@@ -35,9 +35,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; /
     // LoginComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    // RegisterComponent, // 稍後創建
-    // ResetPasswordComponent, // 稍後創建
-    // ActivationSuccessComponent // 稍後創建
+    ActivateAccountComponent,
+    SetInitialPasswordComponent,
+    RegistrationSuccessComponent
   ],
   imports: [
     CommonModule,
@@ -59,7 +59,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; /
   ],
   exports: [
     // 如果 AuthModalComponent 僅通過 MatDialog 開啟，則無需 export
-    // 如果 LoginComponent 和 RegisterComponent 也需要在其他模組中直接使用，則需要 export
+    // 通常無需在此處 export。但如果 ForgotPasswordComponent 等也希望被其他模組直接使用，可以考慮 export。
   ]
 })
 export class AuthModule { }

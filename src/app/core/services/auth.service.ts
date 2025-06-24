@@ -21,7 +21,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   /**
-   * 註冊新用戶並發送驗證郵件
+   * 註冊新用戶並發送驗證郵件 (Email Only!)
    * @param email 用戶的電子郵件
    */
   register(email: string): Observable<any> {
@@ -120,6 +120,18 @@ export class AuthService {
    */
   resetPassword(token: string, newPassword: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/reset-password`, { token, newPassword }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  /**
+   * 設定初始密碼 (新功能)
+   * @param token 用於識別用戶的激活令牌
+   * @param newPassword 用戶設定的新密碼
+   */
+    setInitialPassword(token: string, newPassword: string): Observable<any> {
+    // 這個 API 端點需要在後端實現，與 reset-password 不同
+    return this.http.post(`${this.apiUrl}/set-initial-password`, { token, newPassword }).pipe(
       catchError(this.handleError)
     );
   }

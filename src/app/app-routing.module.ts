@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component'; // 導入 HomeComponent
-// import { ContactComponent } from './contact/contact.component'; // 如果您有聯絡我們頁面
-// import { AboutComponent } from './about/about.component'; // 如果您有關於好神頁面
 import { ProductListComponent } from './product-list/product-list.component'; // 導入 ProductListComponent
 import { ProductDetailComponent } from './product-detail/product-detail.component'; // 導入 ProductDetailComponent
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { ActivateAccountComponent } from './auth/activate-account/activate-account.component'; // 用於 Email 激活
+import { SetInitialPasswordComponent } from './auth/set-initial-password/set-initial-password.component'; // 用於初始密碼設定
+import { RegistrationSuccessComponent } from './auth/registration-success/registration-success.component'; // 用於註冊成功提示頁
 
 
 const routes: Routes = [
@@ -16,9 +17,9 @@ const routes: Routes = [
   { path: 'product/:id', component: ProductDetailComponent }, // 商品細節頁
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent },
-  // { path: 'contact', component: ContactComponent },
-  // { path: 'about', component: AboutComponent },
-  // ... 其他路由
+  { path: 'activate-account/:token', component: ActivateAccountComponent }, // 郵件中的激活連結導向此處
+  { path: 'set-initial-password/:token', component: SetInitialPasswordComponent }, // 激活後設定初始密碼
+  { path: 'registration-success', component: RegistrationSuccessComponent }, // 註冊成功後的提示頁面
   { path: '**', redirectTo: '' } // 捕獲所有未定義路由並重定向到首頁
 ];
 

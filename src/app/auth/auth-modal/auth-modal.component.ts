@@ -1,5 +1,3 @@
-// src/app/auth/auth-modal/auth-modal.component.ts (修正和優化)
-
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog'; // MatDialog 如果 AuthModalComponent 內部沒有開其他dialog可以移除
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, AsyncValidatorFn } from '@angular/forms'; // 確保導入 AbstractControl
