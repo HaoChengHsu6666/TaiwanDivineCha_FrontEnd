@@ -43,6 +43,9 @@ export class AuthModalComponent implements OnInit {
     this.initLoginForm();
     this.initRegisterForm();
     this.refreshCaptcha(); // 初始化時獲取驗證碼
+     this.registerForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email], [this.emailTakenValidator()]] // <-- 這裡應用非同步驗證器
+    });
   }
 
   initLoginForm(): void {
@@ -183,4 +186,37 @@ export class AuthModalComponent implements OnInit {
   onNoClick(): void {
     this.dialogRef.close();
   }
+
+  // 用於非同步驗證，檢查電子郵件是否已存在
+private emailTakenValidator(): AsyncValidatorFn {
+  return (control: AbstractControl): Observable<ValidationErrors | null> => {
+    // 如果 Email 為空或無效，或沒有值，直接返回 null (不需要驗證)
+    if (!control.value || control.invalid) {
+      return of(null);
+    }
+
+    // 當前 Email 值
+    const currentEmail = control.value;
+
+      // 添加 debounceTime，在用戶停止輸入後延遲 500ms 才發送請求
+      return timer(500).pipe( // <-- 關鍵的 debounceTime
+        switchMap(() => this.authService.checkEmailExists(currentEmail)),
+        map(exists => {
+          // 如果 Email 存在，返回 'emailTaken' 錯誤
+          if (exists) {
+            return { emailTaken: true };
+          }
+          return null; // Email 不存在或可用
+        }),
+        catchError((error) => {
+          console.error('Async email validation error:', error);
+          // 如果後端 API 拋出錯誤，這裡也可以處理它，例如視為 Email 可用（暫時）
+          // 或者根據實際錯誤類型返回不同的驗證錯誤
+          return of(null); // 或者 { backendError: true }
+        }),
+        take(1) // 只取第一個發出的值並完成，防止記憶體洩漏
+      );
+    };
+  }
+
 }
