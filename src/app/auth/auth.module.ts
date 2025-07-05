@@ -6,13 +6,9 @@ import { ReactiveFormsModule } from '@angular/forms'; // **導入 ReactiveFormsM
 
 import { AuthRoutingModule } from './auth-routing.module';
 import { AuthModalComponent } from './auth-modal/auth-modal.component';
-// import { ForgotPasswordComponent } from './forgot-password/forgot-password.component'; // 尚未創建，稍後創建
-// import { ResetPasswordComponent } from './reset-password/reset-password.component'; // 尚未創建，稍後創建
-// import { ActivationSuccessComponent } from './activation-success/activation-success.component'; // 尚未創建，稍後創建
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component'; // 之前修正 ForgotPasswordComponent 用的
 import { ActivateAccountComponent } from './activate-account/activate-account.component';
-import { SetInitialPasswordComponent } from './set-initial-password/set-initial-password.component';
 import { RegistrationSuccessComponent } from './registration-success/registration-success.component';
 
 
@@ -26,18 +22,16 @@ import { MatFormFieldModule } from '@angular/material/form-field'; // 登入/註
 import { MatCheckboxModule } from '@angular/material/checkbox'; // 登入表單的記住我
 import { MatSnackBarModule } from '@angular/material/snack-bar'; // 用於提示訊息
 import { MatCardModule } from '@angular/material/card';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // <-- 如果使用 mat-spinner
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
   declarations: [
     AuthModalComponent,
-    // LoginComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
     ActivateAccountComponent,
-    SetInitialPasswordComponent,
-    RegistrationSuccessComponent
+    RegistrationSuccessComponent,
   ],
   imports: [
     CommonModule,

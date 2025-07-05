@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false, // 表示這是開發環境
-  apiUrl: 'http://localhost:8080/api' // 指向您的 Spring Boot 後端 API 基礎 URL
+  apiUrl: '/api' // 指向您的 Spring Boot 後端 API 基礎 URL
 };
 
 /*

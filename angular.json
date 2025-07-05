@@ -86,6 +86,10 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": { 
+            "browserTarget": "TaiwanDivineCha:build",
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "TaiwanDivineCha:build:production"

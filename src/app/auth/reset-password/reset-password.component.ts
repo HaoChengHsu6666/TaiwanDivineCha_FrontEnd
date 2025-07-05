@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl } from
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { AuthModalComponent } from '../auth-modal/auth-modal.component'; // 導入 AuthModalComponent
 
 @Component({
   selector: 'app-reset-password',
@@ -21,7 +23,8 @@ export class ResetPasswordComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -73,11 +76,15 @@ export class ResetPasswordComponent implements OnInit {
 
     this.authService.resetPassword(this.token, newPassword).subscribe({
       next: (response) => {
-        this.message = response.message || '密碼已成功重設！請使用新密碼登入。';
-        this.snackBar.open(this.message, '關閉', { duration: 5000, panelClass: ['success-snackbar'] });
-        this.isLoading = false;
-        this.router.navigate(['/']); // 重設成功後導航到首頁，或可以引導用戶重新打開 AuthModalComponent 到登入頁籤
-        // this.dialog.open(AuthModalComponent, { data: { selectedTabIndex: 0 } }); // 或者這樣
+          this.message = response.message || '密碼已成功重設！請使用新密碼登入。';
+          this.snackBar.open(this.message, '關閉', { duration: 5000, panelClass: ['success-snackbar'] });
+          this.isLoading = false;  
+          // 導航到首頁，然後打開登入模態框
+          this.router.navigate(['/']).then(() => {
+          this.dialog.open(AuthModalComponent, {
+            data: { selectedTabIndex: 0 }
+          });
+        });
       },
       error: (error) => {
         this.message = error.message || '重設密碼失敗，連結可能已過期或無效。';
@@ -93,5 +100,13 @@ export class ResetPasswordComponent implements OnInit {
 
   get confirmPasswordControl() {
     return this.resetPasswordForm.get('confirmPassword');
+  }
+
+    goToLogin(): void {
+    this.router.navigate(['/']).then(() => {
+      this.dialog.open(AuthModalComponent, {
+        data: { selectedTabIndex: 0 } // 打開登入頁籤
+      });
+    });
   }
 }

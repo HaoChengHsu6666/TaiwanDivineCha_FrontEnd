@@ -12,6 +12,21 @@ interface AuthResponse {
   // 根據您的後端實際返回的內容，添加其他屬性
 }
 
+// 定義註冊成功的介面，後端可能只返回一個訊息
+interface RegisterResponse {
+  message: string;
+}
+
+// 定義驗證 Email 的回應
+interface VerifyEmailResponse {
+  message: string;
+  // 根據您的後端設計，這裡可能不需要 jwt 或 user，
+  // 因為驗證後是引導用戶去「設定密碼」，而非直接登入。
+  // 如果後端verify-email後直接登入，則需要jwt和user
+  // jwt?: string;
+  // user?: any;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -24,9 +39,11 @@ export class AuthService {
    * 註冊新用戶並發送驗證郵件 (Email Only!)
    * @param email 用戶的電子郵件
    */
-  register(email: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, { email }).pipe(
-      catchError(this.handleError)
+  register(email: string): Observable<RegisterResponse> {
+    return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, { email }).pipe(
+    catchError((error: any): Observable<never> => {
+          return this.handleError(error);
+        })    
     );
   }
 
@@ -72,15 +89,9 @@ export class AuthService {
    * @param token 激活Token
    * 後端 API 應返回 JWT Token 和用戶信息，以便前端自動登入
    */
-  verifyEmail(token: string): Observable<AuthResponse> {
-    return this.http.get<AuthResponse>(`${this.apiUrl}/verify-email?token=${token}`).pipe(
-      tap(response => {
-        if (response && response.jwt) {
-          localStorage.setItem('authToken', response.jwt);
-          localStorage.setItem('currentUser', JSON.stringify(response.user)); // 假設後端返回user信息
-        }
-      }),
-      catchError(this.handleError)
+  verifyEmail(token: string): Observable<VerifyEmailResponse> {
+    return this.http.get<VerifyEmailResponse>(`${this.apiUrl}/verify-email?token=${token}`).pipe(
+    catchError(err => this.handleError(err))
     );
   }
 
@@ -124,20 +135,8 @@ export class AuthService {
     );
   }
 
-  /**
-   * 設定初始密碼 (新功能)
-   * @param token 用於識別用戶的激活令牌
-   * @param newPassword 用戶設定的新密碼
-   */
-    setInitialPassword(token: string, newPassword: string): Observable<any> {
-    // 這個 API 端點需要在後端實現，與 reset-password 不同
-    return this.http.post(`${this.apiUrl}/set-initial-password`, { token, newPassword }).pipe(
-      catchError(this.handleError)
-    );
-  }
-
   // 輔助錯誤處理
-  private handleError(error: any) {
+  private handleError(error: any): Observable<never> {
     let errorMessage = '發生未知錯誤。';
     if (error.error instanceof ErrorEvent) {
       // Client-side error

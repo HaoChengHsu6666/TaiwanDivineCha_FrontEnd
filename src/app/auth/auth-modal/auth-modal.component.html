@@ -75,6 +75,13 @@
             <mat-spinner *ngIf="registerLoading" [diameter]="20" color="accent"></mat-spinner>
           </button>
         </form>
+
+        <div *ngIf="registrationSuccess" class="registration-success-message">
+          <h3>恭喜！註冊成功！</h3>
+          <p>我們已向您的 <span class="highlight-email">{{ registerForm.get('email')?.value }}</span> 信箱發送了驗證郵件，請前往您的信箱並點擊信中的連結以完成帳戶啟用。</p>
+          <p>如果您沒有收到郵件，請檢查垃圾郵件或稍後再試。</p>
+          <button mat-button color="primary" (click)="selectedTabIndex = 0; onNoClick()">好的，前往登入</button>
+        </div>
       </div>
     </mat-tab>
   </mat-tab-group>

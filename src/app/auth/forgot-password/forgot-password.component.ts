@@ -3,11 +3,10 @@ import { FormBuilder, FormGroup, Validators, AsyncValidatorFn, AbstractControl, 
 import { AuthService } from '../../core/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { map, catchError, debounceTime, take } from 'rxjs/operators';
-// 移除 MatDialog 和 AuthModalComponent 的導入，因為現在是獨立頁面
-// import { MatDialog } from '@angular/material/dialog';
-// import { AuthModalComponent } from '../auth-modal/auth-modal.component';
+import { Observable, of, timer} from 'rxjs';
+import { map, catchError, debounceTime, take, switchMap } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { AuthModalComponent } from '../auth-modal/auth-modal.component';
 
 @Component({
   selector: 'app-forgot-password',
@@ -25,39 +24,46 @@ export class ForgotPasswordComponent implements OnInit {
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private router: Router,
-    // private dialog: MatDialog // 移除
+    private dialog: MatDialog 
   ) { }
 
   ngOnInit(): void {
     this.forgotPasswordForm = this.fb.group({
       email: ['',
         [Validators.required, Validators.email],
-        [this.emailExistsValidator()] // 非同步驗證器
+        // 這個驗證器現在應該檢查 Email 是否存在且**已驗證**
+        [this.emailExistsAndVerifiedValidator()] // 非同步驗證器
       ]
     });
   }
 
   // 自定義非同步驗證器：檢查 Email 是否已存在（重設密碼需要 Email 存在）
-  emailExistsValidator(): AsyncValidatorFn {
+  emailExistsAndVerifiedValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       const email = control.value;
-      if (!email || !Validators.email(control)) {
+      if (!email || control.invalid) { // 如果 Email 為空或格式無效，直接返回 null
         return of(null);
       }
 
-      this.isLoading = true; // 開始加載
-      return this.authService.checkEmailExists(email).pipe(
-        debounceTime(500),
-        take(1),
+      // 注意：這裡的 `checkEmailExists` API 可能需要後端擴展，
+      // 以便前端能判斷 Email 是否存在「且已驗證」。
+      // 如果後端 `checkEmailExists` 不包含「驗證」狀態，那麼這個非同步驗證器會難以精確實現。
+      // 在這種情況下，Email 驗證的錯誤會在 `onSubmit` 階段，由後端發送重設郵件時返回。
+      // 為了安全，即使 Email 已註冊但未驗證，後端也可能返回成功的假象，以避免 Email 枚舉攻擊。
+      // 因此，這裡的 `emailExistsAndVerifiedValidator` 僅檢查 Email 格式和是否存在。
+      // 真正的「是否已驗證」的檢查和錯誤回饋會發生在 `onSubmit` 呼叫 `sendResetPasswordEmail` 後。
+
+      return timer(500).pipe( // 防抖 500 毫秒
+        switchMap(() => this.authService.checkEmailExists(email)), // 假設這個 API 仍然只檢查存在
         map(exists => {
-          this.isLoading = false; // 結束加載
-          // 如果 exists 為 false，表示 Email 未註冊，則驗證失敗 (返回 { emailNotRegistered: true })
-          return exists ? null : { emailNotRegistered: true };
+          // 如果 Email 不存在 (exists 為 false)，則返回錯誤
+          return exists ? null : { emailNotFoundOrUnverified: true }; // 修改錯誤名稱
         }),
         catchError(() => {
-          this.isLoading = false; // 結束加載
-          return of(null); // 捕獲錯誤，避免驗證器崩潰，並視為成功 (或根據需求處理錯誤狀態)
-        })
+          // 如果檢查 Email API 失敗，默認視為 Email 不存在或不可用
+          return of({ emailNotFoundOrUnverified: true }); // 修改錯誤名稱
+        }),
+        take(1)
       );
     };
   }
@@ -88,6 +94,15 @@ export class ForgotPasswordComponent implements OnInit {
         this.snackBar.open(this.errorMessage, '關閉', { duration: 5000, panelClass: ['error-snackbar'] });
         this.isLoading = false;
       }
+    });
+  }
+
+  // 新增一個方法來導航回登入模態框
+  goToLogin(): void {
+    this.router.navigate(['/']).then(() => { // 導航回根路徑或您打開 AuthModal 的路徑
+      this.dialog.open(AuthModalComponent, {
+        data: { selectedTabIndex: 0 } // 打開登入頁籤
+      });
     });
   }
 

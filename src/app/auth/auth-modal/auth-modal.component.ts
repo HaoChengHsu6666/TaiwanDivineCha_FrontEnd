@@ -5,7 +5,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable, of, timer } from 'rxjs';
-import { map, switchMap, catchError, debounceTime, take } from 'rxjs/operators';
+import { map, switchMap, catchError, take } from 'rxjs/operators';
 
 export interface AuthDialogData {
   selectedTabIndex: number; // 0 for Login, 1 for Register
@@ -19,11 +19,12 @@ export interface AuthDialogData {
 export class AuthModalComponent implements OnInit {
   selectedTabIndex: number;
 
-  loginForm!: FormGroup; // 確保在 ngOnInit 中初始化
+  loginForm!: FormGroup; 
   loginLoading: boolean = false;
 
-  registerForm!: FormGroup; // 確保在 ngOnInit 中初始化
-  registerLoading: boolean = false;
+  registerForm!: FormGroup; 
+  registerLoading: boolean = false
+  registrationSuccess: boolean = false; // <-- 新增：註冊成功狀態
 
   captchaImageUrl: string = ''; // 用於儲存驗證碼圖片的 URL
 
@@ -43,9 +44,6 @@ export class AuthModalComponent implements OnInit {
     this.initLoginForm();
     this.initRegisterForm();
     this.refreshCaptcha(); // 初始化時獲取驗證碼
-     this.registerForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email], [this.emailTakenValidator()]] // <-- 這裡應用非同步驗證器
-    });
   }
 
   initLoginForm(): void {
@@ -60,7 +58,7 @@ export class AuthModalComponent implements OnInit {
     this.registerForm = this.fb.group({
       email: ['',
         [Validators.required, Validators.email],
-        [this.emailExistsValidator()]
+        [this.emailNotRegisteredValidator ()]
       ]
     });
   }
@@ -78,22 +76,19 @@ export class AuthModalComponent implements OnInit {
     return this.registerForm.get('email');
   }
 
-  emailExistsValidator(): AsyncValidatorFn {
+  // emailNotRegisteredValidator  讓它適用於註冊 (檢查 Email 是否已被使用)
+  emailNotRegisteredValidator (): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       if (!control.valueChanges || control.pristine) {
         return of(null);
       }
       return timer(500).pipe( // 防抖 500 毫秒
-        switchMap(() => {
-          if (!control.value) { // 檢查值是否為空，如果是空則不發送請求
-            return of(null);
-          }
-          return this.authService.checkEmailExists(control.value);
-        }),
+        switchMap(() => this.authService.checkEmailExists(control.value)),
         map(exists => {
+          // 如果 Email 存在 (exists 為 true)，則表示 Email 已被註冊，返回 'emailTaken' 錯誤
           return exists ? { emailTaken: true } : null;
         }),
-        catchError(() => of(null)),
+        catchError(() => of(null)), // 遇到錯誤時，視為 Email 可用（避免阻礙註冊
         take(1)
       );
     };
@@ -165,9 +160,9 @@ export class AuthModalComponent implements OnInit {
     this.authService.register(email).subscribe({
       next: (response) => {
         this.registerLoading = false;
-        this.snackBar.open('註冊成功！請檢查您的電子郵件以激活帳戶。', '關閉', { duration: 5000 });
-        this.registerForm.reset();
-        this.selectedTabIndex = 0; // 切換回登入頁籤
+        // 不再自動切換到登入頁籤，而是顯示成功訊息
+        this.registrationSuccess = true; // <-- 設定註冊成功狀態
+        this.snackBar.open('註冊成功！請檢查您的電子郵件，點擊連結以設定密碼並啟用帳戶。', '關閉', { duration: 5000 });
       },
       error: (error) => {
         this.registerLoading = false;
