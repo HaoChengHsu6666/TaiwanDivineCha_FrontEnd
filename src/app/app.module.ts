@@ -3,7 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http'; // 確保這個也導入了，用於 ProductService
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; // 確保這個也導入了，用於 ProductService
+import { AuthInterceptor } from './core/services/auth.interceptor'; // 導入我們的 Interceptor
 
 // Angular Material 模組
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -62,7 +63,8 @@ import { FormsModule } from '@angular/forms'; // <-- 導入 FormsModule
   ],
   providers: [
     provideAnimationsAsync(),
-    ProductService // 提供 ProductService
+    ProductService, // 提供 ProductService
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true } // 註冊我們的 Interceptor
   ],
   bootstrap: [AppComponent]
 })

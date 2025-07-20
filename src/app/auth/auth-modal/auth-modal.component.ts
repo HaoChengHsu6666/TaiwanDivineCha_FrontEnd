@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dial
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, AsyncValidatorFn } from '@angular/forms'; // 確保導入 AbstractControl
 import { AuthService } from '../../core/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router'; // 導入 ActivatedRoute
 import { Observable, of, timer } from 'rxjs';
 import { map, switchMap, catchError, take } from 'rxjs/operators';
 
@@ -27,6 +27,7 @@ export class AuthModalComponent implements OnInit {
   registrationSuccess: boolean = false; // <-- 新增：註冊成功狀態
 
   captchaImageUrl: string = ''; // 用於儲存驗證碼圖片的 URL
+  private returnUrl: string;
 
   constructor(
     public dialogRef: MatDialogRef<AuthModalComponent>,
@@ -35,9 +36,11 @@ export class AuthModalComponent implements OnInit {
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private router: Router,
+    private route: ActivatedRoute // <-- 注入 ActivatedRoute
     // private dialog: MatDialog // 如果 AuthModalComponent 內部沒有直接打開其他 MatDialog，可以考慮移除
   ) {
     this.selectedTabIndex = data.selectedTabIndex;
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   ngOnInit(): void {
@@ -118,7 +121,9 @@ export class AuthModalComponent implements OnInit {
   }
 
   onLoginSubmit(): void {
+    console.log('onLoginSubmit called.');
     if (this.loginForm.invalid) {
+      console.log('Login form is invalid.', this.loginForm.errors);
       this.loginForm.markAllAsTouched();
       this.snackBar.open('請檢查所有必填欄位。', '關閉', { duration: 3000 });
       this.refreshCaptcha(); // 登入失敗或表單無效時刷新驗證碼
@@ -127,18 +132,20 @@ export class AuthModalComponent implements OnInit {
 
     this.loginLoading = true;
     const credentials = this.loginForm.value; // 直接獲取整個物件
+    console.log('Sending login credentials:', credentials);
 
     // 將整個 credentials 物件作為單一參數傳遞給 authService.login
     this.authService.login(credentials).subscribe({
       next: (response) => {
+        console.log('Login successful! Response:', response);
         this.loginLoading = false;
         this.snackBar.open('登入成功！', '關閉', { duration: 3000 });
         this.dialogRef.close(true);
-        // this.router.navigate(['/profile']); // 如果需要登入後導航
+        this.router.navigateByUrl(this.returnUrl); // <-- 登入成功後導航
       },
       error: (error) => {
-        this.loginLoading = false;
         console.error('Login error:', error);
+        this.loginLoading = false;
         // 嘗試從 error.error.message 獲取後端返回的具體錯誤訊息
         const errorMessage = error.error?.message || error.message || '登入失敗，請檢查電子郵件、密碼或驗證碼。';
         this.snackBar.open(errorMessage, '關閉', { duration: 5000 });

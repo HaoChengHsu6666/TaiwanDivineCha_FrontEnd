@@ -4,12 +4,9 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators'; // 導入 tap
 import { environment } from '../../../environments/environment';
 
-// 定義登入回應的介面
+// 定義登入回應的介面，使其與後端 AuthenticationResponse 匹配
 interface AuthResponse {
-  jwt?: string; // JWT Token，可能是可選的，或者您也可以定義為 string
-  user?: any; // 用戶資訊，這裡先用 any，如果未來有 User 介面可以替換
-  message?: string; // 例如，登入成功訊息
-  // 根據您的後端實際返回的內容，添加其他屬性
+  token: string; // 後端回傳的 JWT Token
 }
 
 // 定義註冊成功的介面，後端可能只返回一個訊息
@@ -100,14 +97,13 @@ export class AuthService {
    * @param email
    * @param password
    * @param captcha
-   * 後端 API 應返回 JWT Token 和用戶信息
+   * 後端 API 應返回包含 JWT Token 的 AuthResponse
    */
   login(credentials: { email: string, password: string, captcha: string}): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
       tap(response => {
-        if (response && response.jwt) {
-          localStorage.setItem('authToken', response.jwt);
-          localStorage.setItem('currentUser', JSON.stringify(response.user)); // 假設後端返回user信息
+        if (response && response.token) {
+          localStorage.setItem('token', response.token);
         }
       }),
       catchError(this.handleError)
@@ -158,7 +154,7 @@ export class AuthService {
 
   // 取得 JWT Token
   getToken(): string | null {
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('token');
   }
 
   // 檢查用戶是否登入
@@ -168,8 +164,8 @@ export class AuthService {
 
   // 登出
   logout(): void {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem('token');
+    localStorage.removeItem('currentUser'); // 保留移除 currentUser，以防舊資料殘留
     // 您可能還需要導航到登入頁面或主頁
   }
 }
