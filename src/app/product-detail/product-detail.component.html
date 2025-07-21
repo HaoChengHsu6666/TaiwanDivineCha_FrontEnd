@@ -25,9 +25,20 @@
     <div class="product-meta">
       <p *ngIf="product.weight">淨重: {{ product.weight }}</p>
       <p *ngIf="product.origin">產地: {{ product.origin }}</p>
+      <p>庫存: {{ product.stock }}</p>
     </div>
 
-    <button mat-raised-button color="primary" class="add-to-cart-button">
+    <div class="quantity-selector">
+      <button mat-icon-button (click)="decreaseQuantity()" [disabled]="quantity <= 1">
+        <mat-icon>remove</mat-icon>
+      </button>
+      <span>{{ quantity }}</span>
+      <button mat-icon-button (click)="increaseQuantity()" [disabled]="quantity >= product.stock">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <button mat-raised-button color="primary" class="add-to-cart-button" (click)="addToCart(product)" [disabled]="product.stock === 0">
       <mat-icon>shopping_cart</mat-icon> 加入購物車
     </button>
   </div>

@@ -12,7 +12,7 @@
       </a>
       <mat-card-actions>
         <button mat-button [routerLink]="['/product', product.id]">查看詳情</button>
-        <button mat-button>加入購物車</button>
+        <button mat-button (click)="addToCart(product)" [disabled]="product.stock === 0">加入購物車</button>
       </mat-card-actions>
     </mat-card>
   </div>

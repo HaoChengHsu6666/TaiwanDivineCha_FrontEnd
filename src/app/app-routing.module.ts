@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component'; // 導入 HomeComponent
 import { ProductListComponent } from './product-list/product-list.component'; // 導入 ProductListComponent
 import { ProductDetailComponent } from './product-detail/product-detail.component'; // 導入 ProductDetailComponent
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component'; // 導入 ShoppingCartComponent
 // import { LayoutComponent } from './layout/layout.component';
 
 
@@ -15,6 +16,7 @@ const routes: Routes = [
         { path: 'products', component: ProductListComponent }, // 所有商品列表 (來品神茶主頁)
         { path: 'products/category/:category', component: ProductListComponent }, // 按分類篩選 (如果需要更精確路由)
         { path: 'product/:id', component: ProductDetailComponent }, // 商品細節頁
+        { path: 'cart', component: ShoppingCartComponent }, // 購物車頁面
       ] 
   },
 

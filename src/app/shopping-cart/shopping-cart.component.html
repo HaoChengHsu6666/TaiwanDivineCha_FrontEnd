@@ -1,0 +1,51 @@
+<div class="shopping-cart-container">
+  <h2>您的購物車</h2>
+
+  <ng-container *ngIf="cart && cart.cartItems.length > 0; else emptyCart">
+    <table class="cart-table">
+      <thead>
+        <tr>
+          <th>商品縮圖</th>
+          <th>名稱</th>
+          <th>分類</th>
+          <th>價格</th>
+          <th>庫存</th>
+          <th>數量</th>
+          <th>小計</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of cart.cartItems">
+          <td><img [src]="item.imageUrl" alt="{{ item.productName }}" class="product-thumbnail"></td>
+          <td>{{ item.productName }}</td>
+          <td>{{ item.category }}</td>
+          <td>NT$ {{ item.price | number:'1.0-0' }}</td>
+          <td>{{ item.stock }}</td>
+          <td>
+            <div class="quantity-control">
+              <button (click)="updateQuantity(item, item.quantity - 1)" [disabled]="item.quantity <= 1">-</button>
+              <span>{{ item.quantity }}</span>
+              <button (click)="updateQuantity(item, item.quantity + 1)" [disabled]="item.quantity >= item.stock">+</button>
+            </div>
+          </td>
+          <td>NT$ {{ item.subtotal | number:'1.0-0' }}</td>
+          <td>
+            <button (click)="removeItem(item.productId)" class="delete-button">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="cart-summary">
+      <h3>總金額: NT$ {{ cart.totalAmount | number:'1.0-0' }}</h3>
+      <button mat-raised-button color="primary">前往結帳</button>
+    </div>
+  </ng-container>
+
+  <ng-template #emptyCart>
+    <p class="empty-cart-message">您的購物車是空的。</p>
+  </ng-template>
+</div>

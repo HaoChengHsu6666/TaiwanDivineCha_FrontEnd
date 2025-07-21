@@ -21,7 +21,8 @@ export class ProductService {
       price: 800,
       weight: '150g',
       features: ['手工採摘', '清香甘醇', '高山綠茶'],
-      origin: '台灣三峽'
+      origin: '台灣三峽',
+      stock: 100
     },
     {
       id: 'shanlinxi-qing',
@@ -35,7 +36,8 @@ export class ProductService {
       price: 1200,
       weight: '150g',
       features: ['高山烏龍', '花果香', '喉韻悠長'],
-      origin: '台灣杉林溪'
+      origin: '台灣杉林溪',
+      stock: 100
     },
     {
       id: 'dongding-oolong',
@@ -49,7 +51,8 @@ export class ProductService {
       price: 950,
       weight: '150g',
       features: ['傳統工藝', '濃郁醇厚', '回甘'],
-      origin: '台灣鹿谷'
+      origin: '台灣鹿谷',
+      stock: 100
     },
     {
       id: 'beipu-oriental-beauty',
@@ -63,7 +66,8 @@ export class ProductService {
       price: 1500,
       weight: '75g',
       features: ['小綠葉蟬', '蜜香', '熟果香'],
-      origin: '台灣北埔'
+      origin: '台灣北埔',
+      stock: 100
     },
     {
       id: 'sun-moon-lake-ruby',
@@ -77,7 +81,8 @@ export class ProductService {
       price: 700,
       weight: '100g',
       features: ['台茶18號', '肉桂薄荷香', '溫潤'],
-      origin: '台灣日月潭'
+      origin: '台灣日月潭',
+      stock: 100
     },
     {
         id: 'Mucha_Tieguanyin',
@@ -91,7 +96,8 @@ export class ProductService {
         price: 1000,
         weight: '150g',
         features: ['傳統工藝', '濃郁焙火香', '觀音韻'],
-        origin: '台灣木柵'
+        origin: '台灣木柵',
+        stock: 100
       },
       {
         id: 'Alishan_Jinxuan_Tea',
@@ -105,7 +111,8 @@ export class ProductService {
         price: 900,
         weight: '150g',
         features: ['高山金萱', '天然奶香', '清甜滑潤'],
-        origin: '台灣阿里山'
+        origin: '台灣阿里山',
+        stock: 100
       },
       {
         id: 'Lishan_Green_Tea',
@@ -119,7 +126,8 @@ export class ProductService {
         price: 1300,
         weight: '150g',
         features: ['高山茶', '清雅回甘', '冷礦味'],
-        origin: '台灣梨山'
+        origin: '台灣梨山',
+        stock: 100
       }
   ];
 

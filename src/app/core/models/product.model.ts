@@ -10,4 +10,5 @@ export interface Product {
   weight?: string; // 重量 (可選)
   features?: string[]; // 特點 (可選)
   origin?: string; // 產地 (可選)
+  stock: number; // 庫存
 }

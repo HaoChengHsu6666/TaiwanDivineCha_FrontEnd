@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../core/services/product.service'; // 確認路徑正確
-import { Product } from '../core/models/product.model'; // 確認路徑正確
+import { ProductService } from '../core/services/product.service';
+import { Product } from '../core/models/product.model';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs'; // 確保導入 of
+import { of } from 'rxjs';
+import { CartService } from '../core/services/cart.service'; // Import CartService
+import { MatSnackBar } from '@angular/material/snack-bar'; // Import MatSnackBar
 
 @Component({
   selector: 'app-product-list',
@@ -17,26 +19,21 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private route: ActivatedRoute // 用於獲取查詢參數或路由參數
+    private route: ActivatedRoute,
+    private cartService: CartService, // Inject CartService
+    private snackBar: MatSnackBar // Inject MatSnackBar
   ) { }
 
   ngOnInit(): void {
-    this.products$ = this.route.queryParamMap.pipe( // 監聽查詢參數 (例如 ?category=綠茶)
+    this.products$ = this.route.queryParamMap.pipe(
       switchMap(params => {
         const category = params.get('category');
-        const searchTerm = params.get('q');     // **獲取搜尋關鍵字 'q' 參數**
-
-        // 這裡確保 getProducts() 拿到的是 Observable，並且在 filter 時使用 .subscribe 或 .toPromise().then()
-        // 因為 ProductService.getProducts() 已經返回 Observable<Product[]>，所以下面的鏈式操作是正確的
+        const searchTerm = params.get('q');
 
         if (category) {
-          // 如果有 category 參數，則按分類篩選
           return this.productService.getProductsByCategory(category);
         } else if (searchTerm) {
-          // **如果有搜尋關鍵字 'q' 參數，則進行搜尋過濾**
           const lowerCaseTerm = searchTerm.toLowerCase();
-          // 在這裡，我們需要獲取所有產品，然後進行過濾
-          // productService.getProducts() 返回的是 Observable，所以用 switchMap 處理
           return this.productService.getProducts().pipe(
             switchMap(allProducts => {
               const filtered = allProducts.filter(product =>
@@ -44,14 +41,35 @@ export class ProductListComponent implements OnInit {
                 product.category.toLowerCase().includes(lowerCaseTerm) ||
                 (product.description && product.description.toLowerCase().includes(lowerCaseTerm))
               );
-              return of(filtered); // 返回過濾後的產品
+              return of(filtered);
             })
           );
         } else {
-          // 如果沒有任何參數，顯示所有商品
           return this.productService.getProducts();
         }
       })
     );
+  }
+
+  addToCart(product: Product): void {
+    if (!product.id) {
+      this.snackBar.open('商品ID缺失，無法加入購物車', '關閉', { duration: 3000 });
+      return;
+    }
+
+    if (product.stock === 0) {
+      this.snackBar.open('商品已售罄', '關閉', { duration: 3000 });
+      return;
+    }
+
+    this.cartService.addToCart(product.id, 1).subscribe({
+      next: () => {
+        this.snackBar.open('已加入購物車', '關閉', { duration: 3000 });
+      },
+      error: (err) => {
+        console.error('Failed to add to cart', err);
+        this.snackBar.open('加入購物車失敗', '關閉', { duration: 3000 });
+      }
+    });
   }
 }

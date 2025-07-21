@@ -5,6 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; // 確保這個也導入了，用於 ProductService
 import { AuthInterceptor } from './core/services/auth.interceptor'; // 導入我們的 Interceptor
+import { CommonModule } from '@angular/common'; // 導入 CommonModule
+import { RouterModule } from '@angular/router'; // 導入 RouterModule
+import { ShoppingCartModule } from './shopping-cart/shopping-cart.module'; // 導入 ShoppingCartModule
 
 // Angular Material 模組
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -48,6 +51,8 @@ import { FormsModule } from '@angular/forms'; // <-- 導入 FormsModule
     FormsModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    CommonModule, // 添加 CommonModule
+    RouterModule, // 添加 RouterModule
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
@@ -60,6 +65,7 @@ import { FormsModule } from '@angular/forms'; // <-- 導入 FormsModule
     MatInputModule,
     MatTabsModule,
     // AuthModule, // ** 配合惰性載入(Lazy Loading) 故不使用 AuthModule** 
+    ShoppingCartModule,
   ],
   providers: [
     provideAnimationsAsync(),

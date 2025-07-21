@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProductService } from '../core/services/product.service'; // 確認路徑正確
-import { Product } from '../core/models/product.model'; // 確認路徑正確
+import { ProductService } from '../core/services/product.service';
+import { Product } from '../core/models/product.model';
 import { Observable, EMPTY } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { Location } from '@angular/common'; // **引入 Location 服務**
+import { Location } from '@angular/common';
+import { CartService } from '../core/services/cart.service'; // Import CartService
+import { MatSnackBar } from '@angular/material/snack-bar'; // Import MatSnackBar
 
 @Component({
   selector: 'app-product-detail',
@@ -14,11 +16,14 @@ import { Location } from '@angular/common'; // **引入 Location 服務**
 export class ProductDetailComponent implements OnInit {
 
   product$: Observable<Product | undefined> = EMPTY;
+  quantity: number = 1; // Default quantity for adding to cart
 
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-    private location: Location // **注入 Location 服務**
+    private location: Location,
+    private cartService: CartService, // Inject CartService
+    private snackBar: MatSnackBar // Inject MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -28,13 +33,49 @@ export class ProductDetailComponent implements OnInit {
         if (productId) {
           return this.productService.getProductById(productId);
         }
-        return EMPTY; // 如果沒有 id 則返回空
+        return EMPTY;
       })
     );
   }
 
-  // **新增關閉方法**
   closeProductDetail(): void {
-    this.location.back(); // 使用 Location 服務導航回上一頁
+    this.location.back();
+  }
+
+  addToCart(product: Product): void {
+    if (!product.id) {
+      this.snackBar.open('商品ID缺失，無法加入購物車', '關閉', { duration: 3000 });
+      return;
+    }
+
+    if (this.quantity <= 0) {
+      this.snackBar.open('數量必須大於0', '關閉', { duration: 3000 });
+      return;
+    }
+
+    if (product.stock !== undefined && this.quantity > product.stock) {
+      this.snackBar.open('庫存不足', '關閉', { duration: 3000 });
+      return;
+    }
+
+    this.cartService.addToCart(product.id, this.quantity).subscribe({
+      next: () => {
+        this.snackBar.open('已加入購物車', '關閉', { duration: 3000 });
+      },
+      error: (err) => {
+        console.error('Failed to add to cart', err);
+        this.snackBar.open('加入購物車失敗', '關閉', { duration: 3000 });
+      }
+    });
+  }
+
+  increaseQuantity(): void {
+    this.quantity++;
+  }
+
+  decreaseQuantity(): void {
+    if (this.quantity > 1) {
+      this.quantity--;
+    }
   }
 }
