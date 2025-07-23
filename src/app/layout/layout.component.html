@@ -3,6 +3,7 @@
     <a routerLink="/" class="logo-link">
       <img src="assets/logo.png" alt="好神茶廠" class="logo-image">
     </a>
+    <span class="logo-name">好神茶廠</span>
   </div>
 
   <div class="navbar-center">
@@ -24,6 +25,8 @@
   </div>
 
   <div class="navbar-right">
+    <span *ngIf="!authService.isLoggedIn()" class="welcome-message">您好茶友，加入好神茶幫選購好茶</span>
+    <span *ngIf="authService.isLoggedIn()" class="welcome-message">好神茶友歡迎您，開始挑選您的上品好茶</span>
     <button mat-icon-button (click)="toggleSearchOverlay()">
       <mat-icon>search</mat-icon>
     </button>

@@ -1,19 +1,21 @@
 <div class="product-list-container">
   <h2>所有茶品</h2>
   <div class="product-grid">
-    <mat-card *ngFor="let product of products$ | async" class="product-card">
-      <a [routerLink]="['/product', product.id]">
-        <img mat-card-image [src]="product.imageUrl" alt="{{ product.name }}">
-        <mat-card-content>
+    <div *ngFor="let product of products$ | async" class="product-card">
+      <a [routerLink]="['/product', product.id]" class="product-link">
+        <div class="product-image-container">
+          <img [src]="product.imageUrl" alt="{{ product.name }}">
+        </div>
+        <div class="product-content">
           <h3>{{ product.name }}</h3>
           <p class="category-tag">{{ product.category }}</p>
           <p class="price">NT$ {{ product.price }}</p>
-        </mat-card-content>
+        </div>
       </a>
-      <mat-card-actions>
-        <button mat-button [routerLink]="['/product', product.id]">查看詳情</button>
-        <button mat-button (click)="addToCart(product)" [disabled]="product.stock === 0">加入購物車</button>
-      </mat-card-actions>
-    </mat-card>
+      <div class="product-actions">
+        <button class="action-button" [routerLink]="['/product', product.id]">查看詳情</button>
+        <button class="action-button" (click)="addToCart(product)" [disabled]="product.stock === 0">加入購物車</button>
+      </div>
+    </div>
   </div>
 </div>

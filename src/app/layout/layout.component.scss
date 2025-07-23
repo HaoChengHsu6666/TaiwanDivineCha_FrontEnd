@@ -4,14 +4,26 @@
   color: #fff;
   height: 80px; // 調整高度以符合圖片
   display: flex;
+  justify-content: space-between; /* 修改這裡 */
   align-items: center;
   padding: 0 50px; // 左右留白
-  // position: fixed; // 固定在頂部
   width: 100%;
-  // top: 0;
-  // left: 0;
   z-index: 1000; // 確保在其他內容之上
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); // 陰影效果
+}
+
+.navbar-left, .navbar-center, .navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-center {
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.navbar-right {
+  justify-content: flex-end; /* 修改這裡 */
 }
 
 .logo {
@@ -133,7 +145,14 @@
   }
 }
 
-// 搜尋疊層 (背景反黑效果)
+  .welcome-message {
+    font-size: 16px;
+    color: #fff;
+    margin-right: 16px;
+    align-self: center;
+  }
+
+
 .search-overlay {
   position: fixed;
   top: 0;

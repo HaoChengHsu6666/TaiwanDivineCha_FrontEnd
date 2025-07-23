@@ -64,7 +64,7 @@ export class ProductDetailComponent implements OnInit {
       },
       error: (err) => {
         console.error('Failed to add to cart', err);
-        this.snackBar.open('加入購物車失敗', '關閉', { duration: 3000 });
+        this.snackBar.open('加入購物車失敗，請先登入', '關閉', { duration: 3000 });
       }
     });
   }
