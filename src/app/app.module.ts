@@ -21,6 +21,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field'; // 新增
 import { MatInputModule } from '@angular/material/input'; // 新增
 import { MatTabsModule } from '@angular/material/tabs'; // 新增
+import { MatSelectModule } from '@angular/material/select';
 
 
 // 元件
@@ -32,7 +33,8 @@ import { HomeComponent } from './home/home.component';
 import { ProductService } from './core/services/product.service'; // 導入 ProductService
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { ProductListComponent } from './product-list/product-list.component';
-import { FormsModule } from '@angular/forms'; // <-- 導入 FormsModule
+import { FormsModule } from '@angular/forms';
+import { ProductOptionsComponent } from './product-options/product-options.component'; // <-- 導入 FormsModule
 
 
 @NgModule({
@@ -44,6 +46,7 @@ import { FormsModule } from '@angular/forms'; // <-- 導入 FormsModule
     // AboutComponent,
     ProductDetailComponent,
     ProductListComponent,
+    ProductOptionsComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,6 +67,7 @@ import { FormsModule } from '@angular/forms'; // <-- 導入 FormsModule
     MatFormFieldModule,
     MatInputModule,
     MatTabsModule,
+    MatSelectModule,
     // AuthModule, // ** 配合惰性載入(Lazy Loading) 故不使用 AuthModule** 
     ShoppingCartModule,
   ],

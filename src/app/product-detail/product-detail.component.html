@@ -1,48 +1,39 @@
-<div class="product-detail-container" *ngIf="product$ | async as product">
-  <button mat-icon-button class="close-detail-button" (click)="closeProductDetail()">
-    <mat-icon>close</mat-icon>
-  </button>
-  
-  <div class="product-images">
-    <img [src]="product.imageUrl" alt="{{ product.name }}" class="main-image">
-    <div class="thumbnail-images">
-      <img *ngFor="let img of product.detailImages" [src]="img" alt="{{ product.name }}" class="thumbnail">
-    </div>
-  </div>
-  <div class="product-info">
-    <h1>{{ product.name }}</h1>
-    <p class="category">分類: {{ product.category }}</p>
-    <p class="price">NT$ {{ product.price }}</p>
-    <p class="description">{{ product.description }}</p>
-
-    <div class="features-list" *ngIf="product.features && product.features.length > 0">
-      <h3>產品特色:</h3>
-      <ul>
-        <li *ngFor="let feature of product.features">{{ feature }}</li>
-      </ul>
-    </div>
-
-    <div class="product-meta">
-      <p *ngIf="product.weight">淨重: {{ product.weight }}</p>
-      <p *ngIf="product.origin">產地: {{ product.origin }}</p>
-      <p>庫存: {{ product.stock }}</p>
-    </div>
-
-    <div class="quantity-selector">
-      <button mat-icon-button (click)="decreaseQuantity()" [disabled]="quantity <= 1">
-        <mat-icon>remove</mat-icon>
-      </button>
-      <span>{{ quantity }}</span>
-      <button mat-icon-button (click)="increaseQuantity()" [disabled]="quantity >= product.stock">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
-
-    <button mat-raised-button color="primary" class="add-to-cart-button" (click)="addToCart(product)" [disabled]="product.stock === 0">
-      <mat-icon>shopping_cart</mat-icon> 加入購物車
+<div class="product-detail-overlay" (click)="closeProductDetail()">
+  <div class="product-detail-card" (click)="$event.stopPropagation()">
+    <button class="close-button" (click)="closeProductDetail()">
+      <mat-icon>close</mat-icon>
     </button>
+    <ng-container *ngIf="product$ | async as product">
+      <div class="product-image-container">
+        <img [src]="product.imageUrl" alt="{{ product.name }}">
+      </div>
+      <div class="product-info">
+        <h2>{{ product.name }}</h2>
+        <p class="category-tag">{{ product.category }}</p>
+        <p class="price">NT$ {{ product.price }}</p>
+        <p class="description">{{ product.description }}</p>
+
+        <mat-form-field appearance="fill">
+          <mat-label>重量</mat-label>
+          <mat-select [(value)]="selectedWeight">
+            <mat-option [value]="150">150g (四兩)</mat-option>
+            <mat-option [value]="300">300g (半斤)</mat-option>
+            <mat-option [value]="600">600g (一斤)</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="quantity-control">
+          <button mat-icon-button (click)="decreaseQuantity()">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <span>{{ quantity }}</span>
+          <button mat-icon-button (click)="increaseQuantity()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+
+        <button mat-raised-button color="primary" (click)="addToCart(product)" [disabled]="product.stock === 0">加入購物車</button>
+      </div>
+    </ng-container>
   </div>
-</div>
-<div *ngIf="!(product$ | async)">
-  <p>找不到該商品。</p>
 </div>

@@ -14,7 +14,7 @@
       </a>
       <div class="product-actions">
         <button class="action-button" [routerLink]="['/product', product.id]">查看詳情</button>
-        <button class="action-button" (click)="addToCart(product)" [disabled]="product.stock === 0">加入購物車</button>
+        <button class="action-button" (click)="openOptionsDialog(product)" [disabled]="product.stock === 0">選購此產品</button>
       </div>
     </div>
   </div>

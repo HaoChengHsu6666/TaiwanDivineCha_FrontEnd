@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>{{ data.product.name }}</h2>
+<mat-dialog-content>
+  <p>請選擇重量和數量</p>
+  <mat-form-field appearance="fill">
+    <mat-label>重量</mat-label>
+    <mat-select [(value)]="selectedWeight">
+      <mat-option [value]="150">150g (四兩)</mat-option>
+      <mat-option [value]="300">300g (半斤)</mat-option>
+      <mat-option [value]="600">600g (一斤)</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="quantity-control">
+    <button mat-icon-button (click)="decrementQuantity()">
+      <mat-icon>remove</mat-icon>
+    </button>
+    <mat-form-field appearance="outline" class="quantity-input">
+      <input matInput type="number" [(ngModel)]="quantity" min="1">
+    </mat-form-field>
+    <button mat-icon-button (click)="incrementQuantity()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">取消</button>
+  <button mat-raised-button color="primary" (click)="addToCart()">加入購物車</button>
+</mat-dialog-actions>

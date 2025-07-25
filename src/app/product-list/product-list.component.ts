@@ -7,6 +7,8 @@ import { switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { CartService } from '../core/services/cart.service'; // Import CartService
 import { MatSnackBar } from '@angular/material/snack-bar'; // Import MatSnackBar
+import { MatDialog } from '@angular/material/dialog';
+import { ProductOptionsComponent } from '../product-options/product-options.component';
 
 @Component({
   selector: 'app-product-list',
@@ -21,7 +23,8 @@ export class ProductListComponent implements OnInit {
     private productService: ProductService,
     private route: ActivatedRoute,
     private cartService: CartService, // Inject CartService
-    private snackBar: MatSnackBar // Inject MatSnackBar
+    private snackBar: MatSnackBar, // Inject MatSnackBar
+    private dialog: MatDialog // Inject MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -51,7 +54,20 @@ export class ProductListComponent implements OnInit {
     );
   }
 
-  addToCart(product: Product): void {
+  openOptionsDialog(product: Product): void {
+    const dialogRef = this.dialog.open(ProductOptionsComponent, {
+      width: '400px',
+      data: { product: product }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.addToCart(result.product, result.quantity, result.weight);
+      }
+    });
+  }
+
+  addToCart(product: Product, quantity: number, weight: number): void {
     if (!product.id) {
       this.snackBar.open('商品ID缺失，無法加入購物車', '關閉', { duration: 3000 });
       return;
@@ -62,7 +78,7 @@ export class ProductListComponent implements OnInit {
       return;
     }
 
-    this.cartService.addToCart(product.id, 1).subscribe({
+    this.cartService.addToCart(product.id, quantity, weight).subscribe({
       next: () => {
         this.snackBar.open('已加入購物車', '關閉', { duration: 3000 });
       },

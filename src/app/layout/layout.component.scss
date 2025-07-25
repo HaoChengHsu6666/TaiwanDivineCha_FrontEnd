@@ -1,6 +1,6 @@
 .main-toolbar {
   position: sticky;
-  background-color: rgba(0, 0, 0, 0.7); // 半透明背景
+  background-color: rgba(0, 128, 0, 0.1); // 半透明背景
   color: #fff;
   height: 80px; // 調整高度以符合圖片
   display: flex;
@@ -15,6 +15,11 @@
 .navbar-left, .navbar-center, .navbar-right {
   display: flex;
   align-items: center;
+  color: black;
+}
+
+.logo-name{
+  color: black;
 }
 
 .navbar-center {
@@ -147,7 +152,7 @@
 
   .welcome-message {
     font-size: 16px;
-    color: #fff;
+    color: black;
     margin-right: 16px;
     align-self: center;
   }

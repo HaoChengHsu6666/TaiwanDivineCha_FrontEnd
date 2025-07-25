@@ -1,0 +1,15 @@
+.quantity-control {
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.quantity-input {
+  width: 60px;
+  margin: 0 8px;
+  text-align: center;
+}
+
+mat-dialog-actions {
+  justify-content: flex-end;
+}

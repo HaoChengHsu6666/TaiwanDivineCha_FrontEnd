@@ -17,6 +17,7 @@ export class ProductDetailComponent implements OnInit {
 
   product$: Observable<Product | undefined> = EMPTY;
   quantity: number = 1; // Default quantity for adding to cart
+  selectedWeight: number = 150; // Default weight
 
   constructor(
     private route: ActivatedRoute,
@@ -58,7 +59,7 @@ export class ProductDetailComponent implements OnInit {
       return;
     }
 
-    this.cartService.addToCart(product.id, this.quantity).subscribe({
+    this.cartService.addToCart(product.id, this.quantity, this.selectedWeight).subscribe({
       next: () => {
         this.snackBar.open('已加入購物車', '關閉', { duration: 3000 });
       },
