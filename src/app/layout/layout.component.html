@@ -1,7 +1,7 @@
 <mat-toolbar class="main-toolbar">
   <div class="navbar-left">
     <a routerLink="/" class="logo-link">
-      <img src="assets/logo.png" alt="好神茶廠" class="logo-image">
+      <img src="assets/index/logo.png" alt="好神茶廠" class="logo-image">
     </a>
     <span class="logo-name">好神茶廠</span>
   </div>
@@ -16,7 +16,7 @@
       <button mat-menu-item [routerLink]="['/products']" [queryParams]="{ category: '紅茶' }">紅茶</button>
       <button mat-menu-item [routerLink]="['/products']">所有茶品</button>
     </mat-menu>
-    <button mat-button routerLink="/contact">聯絡我們及匯款</button>
+    <button mat-button routerLink="/contact">聯絡我們</button>
     <button mat-button [matMenuTriggerFor]="aboutMenu">關於好神</button>
     <mat-menu #aboutMenu="matMenu">
       <button mat-menu-item routerLink="/about">品牌故事</button>
