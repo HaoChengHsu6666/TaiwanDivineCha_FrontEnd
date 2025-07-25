@@ -35,7 +35,8 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
 import { ProductListComponent } from './product-list/product-list.component';
 import { FormsModule } from '@angular/forms';
 import { ProductOptionsComponent } from './product-options/product-options.component';
-import { BrandStoryComponent } from './brand-story/brand-story.component'; // <-- 導入 FormsModule
+import { BrandStoryComponent } from './brand-story/brand-story.component';
+import { FAQComponent } from './faq/faq.component'; // <-- 導入 FormsModule
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import { BrandStoryComponent } from './brand-story/brand-story.component'; // <-
     ProductListComponent,
     ProductOptionsComponent,
     BrandStoryComponent,
+    FAQComponent,
   ],
   imports: [
     BrowserModule,

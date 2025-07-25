@@ -5,6 +5,7 @@ import { ProductListComponent } from './product-list/product-list.component'; //
 import { ProductDetailComponent } from './product-detail/product-detail.component'; // 導入 ProductDetailComponent
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component'; // 導入 ShoppingCartComponent
 import { BrandStoryComponent } from './brand-story/brand-story.component';
+import { FAQComponent } from './faq/faq.component';
 // import { LayoutComponent } from './layout/layout.component';
 
 
@@ -19,6 +20,7 @@ const routes: Routes = [
         { path: 'product/:id', component: ProductDetailComponent }, // 商品細節頁
         { path: 'cart', component: ShoppingCartComponent }, // 購物車頁面
         { path: 'brand-story', component: BrandStoryComponent }, // 品牌故事頁面
+        { path: 'faq', component: FAQComponent }, // 常見問題頁面
       ] 
   },
 
