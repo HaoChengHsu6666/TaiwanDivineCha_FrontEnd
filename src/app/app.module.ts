@@ -34,7 +34,8 @@ import { ProductService } from './core/services/product.service'; // 導入 Prod
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { FormsModule } from '@angular/forms';
-import { ProductOptionsComponent } from './product-options/product-options.component'; // <-- 導入 FormsModule
+import { ProductOptionsComponent } from './product-options/product-options.component';
+import { BrandStoryComponent } from './brand-story/brand-story.component'; // <-- 導入 FormsModule
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { ProductOptionsComponent } from './product-options/product-options.compo
     ProductDetailComponent,
     ProductListComponent,
     ProductOptionsComponent,
+    BrandStoryComponent,
   ],
   imports: [
     BrowserModule,

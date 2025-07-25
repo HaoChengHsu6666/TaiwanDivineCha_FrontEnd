@@ -1,0 +1,88 @@
+.story-container {
+  position: relative;
+  padding: 40px;
+  background-image: url('/assets/story/TeaStoryBackground.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.story-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color:rgba(255, 255, 255, 0.85); /* 這裡的 0.85 是透明度，可以調整 */
+  z-index: 1;
+}
+
+.story-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: 'Microsoft JhengHei', sans-serif;
+  line-height: 1.8;
+  color: #333;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.5em;
+  margin-bottom: 30px;
+}
+
+h2 {
+  font-size: 2em;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #8B4513;
+  padding-bottom: 10px;
+}
+
+h3 {
+  font-size: 1.5em;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  color: #A0522D;
+}
+
+p {
+  font-size: 1.1em;
+  margin-bottom: 20px;
+}
+
+.inline-image-right {
+  float: right;
+  width: 300px;
+  height: auto;
+  margin-left: 20px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.inline-image-left {
+  float: left;
+  width: 300px;
+  height: auto;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.bottom-image {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  margin: 40px auto 0;
+  border-radius: 8px;
+}
+
+/* Clearfix to contain floated elements */
+.story-content::after {
+  content: "";
+  display: table;
+  clear: both;
+}
