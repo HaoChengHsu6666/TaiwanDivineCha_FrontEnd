@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { CartService } from '../core/services/cart.service';
 import { Cart } from '../core/models/cart.model';
@@ -11,7 +12,7 @@ import { CartItem } from '../core/models/cart-item.model';
 export class ShoppingCartComponent implements OnInit {
   cart: Cart | undefined;
 
-  constructor(private cartService: CartService) { }
+  constructor(private cartService: CartService, private router: Router) { }
 
   ngOnInit(): void {
     this.loadCart();
@@ -51,5 +52,10 @@ export class ShoppingCartComponent implements OnInit {
         console.error('Failed to remove cart item', err);
       }
     });
+  }
+
+  onCheckoutClick(): void {
+    console.log('前往結帳按鈕被點擊了！');
+    this.router.navigate(['/checkout']);
   }
 }

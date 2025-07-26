@@ -22,6 +22,7 @@ import { MatFormFieldModule } from '@angular/material/form-field'; // 新增
 import { MatInputModule } from '@angular/material/input'; // 新增
 import { MatTabsModule } from '@angular/material/tabs'; // 新增
 import { MatSelectModule } from '@angular/material/select';
+import { MatListModule } from '@angular/material/list';
 
 
 // 元件
@@ -36,7 +37,10 @@ import { ProductListComponent } from './product-list/product-list.component';
 import { FormsModule } from '@angular/forms';
 import { ProductOptionsComponent } from './product-options/product-options.component';
 import { BrandStoryComponent } from './brand-story/brand-story.component';
-import { FAQComponent } from './faq/faq.component'; // <-- 導入 FormsModule
+import { FAQComponent } from './faq/faq.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CheckoutComponent } from './checkout/checkout.component';
+import { StoreSelectionModalComponent } from './store-selection-modal.component'; // <-- 導入 FormsModule
 
 
 @NgModule({
@@ -51,6 +55,8 @@ import { FAQComponent } from './faq/faq.component'; // <-- 導入 FormsModule
     ProductOptionsComponent,
     BrandStoryComponent,
     FAQComponent,
+    CheckoutComponent,
+    StoreSelectionModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +80,8 @@ import { FAQComponent } from './faq/faq.component'; // <-- 導入 FormsModule
     MatSelectModule,
     // AuthModule, // ** 配合惰性載入(Lazy Loading) 故不使用 AuthModule** 
     ShoppingCartModule,
+    ReactiveFormsModule,
+    MatListModule
   ],
   providers: [
     provideAnimationsAsync(),

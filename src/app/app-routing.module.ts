@@ -1,3 +1,4 @@
+import { CheckoutComponent } from './checkout/checkout.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component'; // 導入 HomeComponent
@@ -21,6 +22,7 @@ const routes: Routes = [
         { path: 'cart', component: ShoppingCartComponent }, // 購物車頁面
         { path: 'brand-story', component: BrandStoryComponent }, // 品牌故事頁面
         { path: 'faq', component: FAQComponent }, // 常見問題頁面
+        { path: 'checkout', component: CheckoutComponent }, // 結帳頁面
       ] 
   },
 

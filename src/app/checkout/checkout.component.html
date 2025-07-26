@@ -1,0 +1,186 @@
+<div class="checkout-container">
+  <h2>結帳</h2>
+
+  <div class="order-summary">
+    <h3>訂單明細</h3>
+    <!-- 修正：將 ng-template #emptyCart 連結到 *ngIf 的 else 條件 -->
+    <ng-container *ngIf="cart && cart.cartItems.length > 0; else emptyCart">
+      <table class="order-table">
+        <thead>
+          <tr>
+            <th>商品縮圖</th>
+            <th>名稱</th>
+            <th>價格</th>
+            <th>數量</th>
+            <th>小計</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cart.cartItems">
+            <td><img [src]="item.imageUrl" alt="{{ item.productName }}" class="product-thumbnail"></td>
+            <td>{{ item.productName }}</td>
+            <td>NT$ {{ item.price | number:'1.0-0' }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>NT$ {{ item.subtotal | number:'1.0-0' }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="total-amount-summary">
+        <h3>總金額: NT$ {{ cart.totalAmount | number:'1.0-0' }}</h3>
+      </div>
+    </ng-container>
+    <!-- ng-template 必須放在 ng-container 之外，但緊鄰其後或在同一層級 -->
+    <ng-template #emptyCart>
+      <p class="empty-cart-message">您的購物車是空的。</p>
+    </ng-template>
+  </div>
+
+  <form [formGroup]="checkoutForm" (ngSubmit)="submitOrder()">
+    <div class="delivery-payment-sections">
+      <div class="delivery-section">
+        <div class="form-section">
+          <h3>寄貨方式</h3>
+          <mat-form-field appearance="fill">
+            <mat-label>選擇寄貨方式</mat-label>
+            <mat-select formControlName="deliveryMethod">
+              <mat-option value="delivery">宅配到府</mat-option>
+              <mat-option value="pickup">超商門市</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- 建議：將 deliveryMethod 的判斷改為從 formControl 獲取值，與 paymentMethod 保持一致 -->
+        <div *ngIf="checkoutForm.get('deliveryMethod')?.value === 'delivery'" formGroupName="deliveryDetails">
+          <h4>宅配到府</h4>
+          <mat-form-field>
+            <input matInput placeholder="收貨人名稱" formControlName="recipientName" required>
+            <mat-error *ngIf="checkoutForm.get('deliveryDetails.recipientName')?.hasError('required') && checkoutForm.get('deliveryDetails.recipientName')?.touched">
+              收貨人名稱為必填
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Email" formControlName="recipientEmail" required>
+            <mat-error *ngIf="checkoutForm.get('deliveryDetails.recipientEmail')?.hasError('required') && checkoutForm.get('deliveryDetails.recipientEmail')?.touched">
+              Email 為必填
+            </mat-error>
+            <mat-error *ngIf="checkoutForm.get('deliveryDetails.recipientEmail')?.hasError('email') && checkoutForm.get('deliveryDetails.recipientEmail')?.touched">
+              Email 格式不正確
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="手機" formControlName="recipientPhone" required>
+            <mat-error *ngIf="checkoutForm.get('deliveryDetails.recipientPhone')?.hasError('required') && checkoutForm.get('deliveryDetails.recipientPhone')?.touched">
+              手機為必填
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="宅配地址" formControlName="deliveryAddress" required>
+            <mat-error *ngIf="checkoutForm.get('deliveryDetails.deliveryAddress')?.hasError('required') && checkoutForm.get('deliveryDetails.deliveryAddress')?.touched">
+              宅配地址為必填
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <textarea matInput placeholder="備註" formControlName="deliveryNotes"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="payment-section">
+        <div class="form-section">
+          <h3>付款方式</h3>
+          <mat-form-field>
+            <mat-label>選擇付款方式</mat-label>
+            <!-- 建議：將 deliveryMethod 的判斷改為從 formControl 獲取值，與 paymentMethod 保持一致 -->
+            <mat-select formControlName="paymentMethod" [disabled]="checkoutForm.get('deliveryMethod')?.value === 'pickup'">
+              <mat-option value="atm">ATM轉帳</mat-option>
+              <mat-option value="creditCard">信用卡</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- 建議：將 deliveryMethod 的判斷改為從 formControl 獲取值，與 paymentMethod 保持一致 -->
+        <div *ngIf="checkoutForm.get('paymentMethod')?.value === 'atm' && checkoutForm.get('deliveryMethod')?.value === 'delivery'" formGroupName="atmPayment">
+          <h4>ATM轉帳</h4>
+          <p>收款人帳號銀行: 013 (國泰世華)</p>
+          <p>收款人帳號: XXXXXXXX9876</p>
+          <p>收款人: 好神茶廠股份有限公司</p>
+          <mat-form-field>
+            <input matInput placeholder="付款人帳號銀行" formControlName="bank" required>
+            <mat-error *ngIf="checkoutForm.get('atmPayment.bank')?.hasError('required') && checkoutForm.get('atmPayment.bank')?.touched">
+              付款人帳號銀行為必填
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="付款人帳號" formControlName="accountNumber" required>
+            <mat-error *ngIf="checkoutForm.get('atmPayment.accountNumber')?.hasError('required') && checkoutForm.get('atmPayment.accountNumber')?.touched">
+              付款人帳號為必填
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="付款人名稱" formControlName="name" required>
+            <mat-error *ngIf="checkoutForm.get('atmPayment.name')?.hasError('required') && checkoutForm.get('atmPayment.name')?.touched">
+              付款人名稱為必填
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="付款人Email" formControlName="email" required>
+            <mat-error *ngIf="checkoutForm.get('atmPayment.email')?.hasError('required') && checkoutForm.get('atmPayment.email')?.touched">
+              付款人Email 為必填
+            </mat-error>
+            <mat-error *ngIf="checkoutForm.get('atmPayment.email')?.hasError('email') && checkoutForm.get('atmPayment.email')?.touched">
+              Email 格式不正確
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="付款人手機" formControlName="phone" required>
+            <mat-error *ngIf="checkoutForm.get('atmPayment.phone')?.hasError('required') && checkoutForm.get('atmPayment.phone')?.touched">
+              付款人手機為必填
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- 建議：將 deliveryMethod 的判斷改為從 formControl 獲取值，與 paymentMethod 保持一致 -->
+        <div *ngIf="checkoutForm.get('paymentMethod')?.value === 'creditCard' && checkoutForm.get('deliveryMethod')?.value === 'delivery'" formGroupName="creditCardPayment">
+          <h4>信用卡付款</h4>
+          <mat-form-field>
+            <input matInput placeholder="付款人Email" formControlName="email" required>
+            <mat-error *ngIf="checkoutForm.get('creditCardPayment.email')?.hasError('required') && checkoutForm.get('creditCardPayment.email')?.touched">
+              付款人Email 為必填
+            </mat-error>
+            <mat-error *ngIf="checkoutForm.get('creditCardPayment.email')?.hasError('email') && checkoutForm.get('creditCardPayment.email')?.touched">
+              Email 格式不正確
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="信用卡卡號" formControlName="cardNumber" required>
+            <mat-error *ngIf="checkoutForm.get('creditCardPayment.cardNumber')?.hasError('required') && checkoutForm.get('creditCardPayment.cardNumber')?.touched">
+              信用卡卡號為必填
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="信用卡到期年月 (MM/YY)" formControlName="cardExpiry" required>
+            <mat-error *ngIf="checkoutForm.get('creditCardPayment.cardExpiry')?.hasError('required') && checkoutForm.get('creditCardPayment.cardExpiry')?.touched">
+              信用卡到期年月為必填
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="信用卡安全碼 (CVC)" formControlName="cardCvc" required>
+            <mat-error *ngIf="checkoutForm.get('creditCardPayment.cardCvc')?.hasError('required') && checkoutForm.get('creditCardPayment.cardCvc')?.touched">
+              信用卡安全碼為必填
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- 建議：將 deliveryMethod 的判斷改為從 formControl 獲取值 -->
+        <div *ngIf="checkoutForm.get('deliveryMethod')?.value === 'pickup'">
+          <p>請於到貨後3日內到該門市付款取貨。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button mat-button routerLink="/cart">回到購物車</button>
+      <button mat-raised-button color="primary" type="submit">送出訂單</button>
+    </div>
+  </form>
+</div>

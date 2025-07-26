@@ -41,7 +41,7 @@
 
     <div class="cart-summary">
       <h3>總金額: NT$ {{ cart.totalAmount | number:'1.0-0' }}</h3>
-      <button mat-raised-button color="primary">前往結帳</button>
+      <button mat-raised-button color="primary" (click)="onCheckoutClick()">前往結帳</button>
     </div>
   </ng-container>
 

@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>選擇超商門市</h2>
+
+<mat-dialog-content>
+  <mat-list>
+    <mat-list-item *ngFor="let store of stores" (click)="onSelectStore(store)" [class.selected]="selectedStore === store">
+      <h3 mat-line>{{ store.name }}</h3>
+      <p mat-line>{{ store.address }}</p>
+    </mat-list-item>
+  </mat-list>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">取消</button>
+  <button mat-raised-button color="primary" (click)="onConfirm()" [disabled]="!selectedStore">確認</button>
+</mat-dialog-actions>
