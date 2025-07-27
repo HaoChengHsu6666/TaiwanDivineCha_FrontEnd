@@ -107,7 +107,6 @@ export class CheckoutComponent implements OnInit {
       const orderData = this.checkoutForm.value;
       this.orderService.createOrder(orderData).subscribe({
         next: (response) => {
-          console.log('Order created successfully', response);
           // 在這裡處理訂單建立成功後的邏輯，例如導向到訂單成功頁面
         },
         error: (err) => {
@@ -115,7 +114,6 @@ export class CheckoutComponent implements OnInit {
         }
       });
     } else {
-      console.log('Form is invalid');
       this.markFormGroupTouched(this.checkoutForm);
     }
   }

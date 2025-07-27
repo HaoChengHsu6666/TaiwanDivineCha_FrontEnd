@@ -8,6 +8,7 @@ import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { BrandStoryComponent } from './brand-story/brand-story.component';
 import { FAQComponent } from './faq/faq.component';
 import { PersonalCenterComponent } from './personal-center/personal-center.component';
+import { AuthGuard } from './core/guards/auth.guard'; // 導入 AuthGuard
 // import { LayoutComponent } from './layout/layout.component';
 
 
@@ -23,8 +24,8 @@ const routes: Routes = [
         { path: 'cart', component: ShoppingCartComponent }, // 購物車頁面
         { path: 'brand-story', component: BrandStoryComponent }, // 品牌故事頁面
         { path: 'faq', component: FAQComponent }, // 常見問題頁面
-        { path: 'checkout', component: CheckoutComponent }, // 結帳頁面
-        { path: 'personal-center', component: PersonalCenterComponent }, // 個人中心頁面
+        { path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuard] }, // 結帳頁面，需要登入
+        { path: 'personal-center', component: PersonalCenterComponent, canActivate: [AuthGuard] }, // 個人中心頁面，需要登入
       ] 
   },
 

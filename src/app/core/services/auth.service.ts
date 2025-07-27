@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment';
 // 定義登入回應的介面，使其與後端 AuthenticationResponse 匹配
 interface AuthResponse {
   token: string; // 後端回傳的 JWT Token
+  isProfileCompleted?: boolean; // 新增：表示用戶資料是否已完成
 }
 
 // 定義註冊成功的介面，後端可能只返回一個訊息
@@ -104,6 +105,8 @@ export class AuthService {
       tap(response => {
         if (response && response.token) {
           localStorage.setItem('token', response.token);
+          // 將 isProfileCompleted 儲存到 localStorage
+          localStorage.setItem('isProfileCompleted', response.isProfileCompleted ? 'true' : 'false');
         }
       }),
       catchError(this.handleError)
@@ -160,6 +163,12 @@ export class AuthService {
   // 檢查用戶是否登入
   isLoggedIn(): boolean {
     return !!this.getToken();
+  }
+
+  // 獲取 isProfileCompleted 狀態
+  getIsProfileCompleted(): boolean {
+    const isCompleted = localStorage.getItem('isProfileCompleted');
+    return isCompleted === 'true';
   }
 
   // 登出
