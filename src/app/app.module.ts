@@ -41,6 +41,7 @@ import { FAQComponent } from './faq/faq.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { StoreSelectionModalComponent } from './store-selection-modal.component'; // <-- 導入 FormsModule
+import { PersonalCenterComponent } from './personal-center/personal-center.component';
 
 
 @NgModule({
@@ -57,6 +58,7 @@ import { StoreSelectionModalComponent } from './store-selection-modal.component'
     FAQComponent,
     CheckoutComponent,
     StoreSelectionModalComponent,
+    PersonalCenterComponent,
   ],
   imports: [
     BrowserModule,

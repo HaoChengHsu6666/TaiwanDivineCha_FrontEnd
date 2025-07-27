@@ -55,7 +55,6 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   onCheckoutClick(): void {
-    console.log('前往結帳按鈕被點擊了！');
     this.router.navigate(['/checkout']);
   }
 }

@@ -1,0 +1,72 @@
+<div class="personal-center-container">
+  <div class="left-section">
+    <h2>會員資料</h2>
+    <div class="info-group">
+      <label for="name">姓名</label>
+      <input type="text" id="name" name="name" [(ngModel)]="userProfile.name" placeholder="請輸入姓名">
+    </div>
+    <div class="info-group">
+      <label for="email">電郵</label>
+      <input type="email" id="email" [(ngModel)]="userProfile.email" placeholder="請輸入電郵" readonly>
+    </div>
+    <div class="info-group">
+      <label for="phone">手機號碼</label>
+      <input type="tel" id="phone" [(ngModel)]="userProfile.mobile" placeholder="請輸入手機號碼">
+    </div>
+    <div class="info-group">
+      <label for="birthdate">生日日期</label>
+      <input type="date" id="birthdate" [(ngModel)]="userProfile.birth">
+      <span class="help-icon">?</span>
+    </div>
+    <a href="#" class="link-button">設定新的密碼</a>
+    <button mat-button class="save-button" (click)="saveProfile()">儲存</button>
+  </div>
+
+  <div class="right-section">
+    <div class="subscription-section">
+      <h2>訂閱</h2>
+      <div class="subscription-item">
+        <span>優惠宣傳</span>
+        <button class="subscribe-button subscribed">已訂閱</button>
+      </div>
+      <div class="subscription-item">
+        <span>訂單通知</span>
+        <button class="subscribe-button">訂閱</button>
+      </div>
+      <div class="social-media-subscriptions">
+        <h3>社群平台</h3>
+        <div class="social-item">
+          <span>Facebook</span>
+          <span class="status subscribed-status">✓ 已訂閱</span>
+        </div>
+        <div class="social-item">
+          <span>Instagram</span>
+          <span class="status">未訂閱</span>
+        動態顯示
+        </div>
+        <div class="social-item">
+          <span>Line</span>
+          <span class="status subscribed-status">✓ 已訂閱</span>
+        </div>
+        <div class="social-item">
+          <span>Thread</span>
+          <span class="status">未訂閱</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="delivery-payment-section">
+      <h2>送貨與付款資料</h2>
+      <div class="address-info">
+        <h3>送貨地址</h3>
+        <p>目前沒有送貨地址</p>
+        <a href="#" class="link-button">新增送貨地址</a>
+      </div>
+      <div class="payment-info">
+        <h3>付款資料</h3>
+        <p>目前沒有信用卡</p>
+        <a href="#" class="link-button">新增信用卡</a>
+      </div>
+    </div>
+  </div>
+</div>
