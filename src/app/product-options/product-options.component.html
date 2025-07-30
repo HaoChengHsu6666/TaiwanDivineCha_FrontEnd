@@ -1,9 +1,10 @@
 <h2 mat-dialog-title>{{ data.product.name }}</h2>
 <mat-dialog-content>
+  <p class="price">NT$ {{ displayPrice | number:'1.0-0' }}</p>
   <p>請選擇重量和數量</p>
   <mat-form-field appearance="fill">
     <mat-label>重量</mat-label>
-    <mat-select [(value)]="selectedWeight">
+    <mat-select [(value)]="selectedWeight" (selectionChange)="calculatePrice()">
       <mat-option [value]="150">150g (四兩)</mat-option>
       <mat-option [value]="300">300g (半斤)</mat-option>
       <mat-option [value]="600">600g (一斤)</mat-option>

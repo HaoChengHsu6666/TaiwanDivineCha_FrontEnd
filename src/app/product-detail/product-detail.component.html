@@ -10,12 +10,12 @@
       <div class="product-info">
         <h2>{{ product.name }}</h2>
         <p class="category-tag">{{ product.category }}</p>
-        <p class="price">NT$ {{ product.price }}</p>
+        <p class="price">NT$ {{ displayPrice | number:'1.0-0' }}</p>
         <p class="description">{{ product.description }}</p>
 
         <mat-form-field appearance="fill">
           <mat-label>重量</mat-label>
-          <mat-select [(value)]="selectedWeight">
+          <mat-select [(value)]="selectedWeight" (selectionChange)="calculatePrice()">
             <mat-option [value]="150">150g (四兩)</mat-option>
             <mat-option [value]="300">300g (半斤)</mat-option>
             <mat-option [value]="600">600g (一斤)</mat-option>

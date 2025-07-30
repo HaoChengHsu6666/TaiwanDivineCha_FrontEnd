@@ -7,4 +7,5 @@ export interface CartItem {
   stock: number;
   quantity: number;
   subtotal: number;
+  weight: number;
 }

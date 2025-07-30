@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../core/services/product.service';
 import { Product } from '../core/models/product.model';
 import { Observable, EMPTY } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { CartService } from '../core/services/cart.service'; // Import CartService
 import { MatSnackBar } from '@angular/material/snack-bar'; // Import MatSnackBar
@@ -17,7 +17,9 @@ export class ProductDetailComponent implements OnInit {
 
   product$: Observable<Product | undefined> = EMPTY;
   quantity: number = 1; // Default quantity for adding to cart
-  selectedWeight: number = 150; // Default weight
+  selectedWeight: number = 600; // Default weight to one jin
+  basePrice: number = 0;
+  displayPrice: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,8 +37,24 @@ export class ProductDetailComponent implements OnInit {
           return this.productService.getProductById(productId);
         }
         return EMPTY;
+      }),
+      tap(product => {
+        if (product) {
+          this.basePrice = product.price;
+          this.calculatePrice();
+        }
       })
     );
+  }
+
+  calculatePrice(): void {
+    let multiplier = 1;
+    if (this.selectedWeight === 300) {
+      multiplier = 0.5;
+    } else if (this.selectedWeight === 150) {
+      multiplier = 0.25;
+    }
+    this.displayPrice = Math.round(this.basePrice * multiplier);
   }
 
   closeProductDetail(): void {

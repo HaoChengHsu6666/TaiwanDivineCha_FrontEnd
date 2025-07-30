@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Cart } from '../models/cart.model';
 
@@ -19,11 +19,12 @@ export class CartService {
     return this.http.post<void>(`${this.apiUrl}/items`, { productId, quantity, weight });
   }
 
-  updateCartItem(productId: string, quantity: number): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/items`, { productId, quantity });
+  updateCartItem(productId: string, quantity: number, weight: number): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/items`, { productId, quantity, weight });
   }
 
-  removeCartItem(productId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/items/${productId}`);
+  removeCartItem(productId: string, weight: number): Observable<void> {
+    const params = new HttpParams().set('weight', weight.toString());
+    return this.http.delete<void>(`${this.apiUrl}/items/${productId}`, { params });
   }
 }

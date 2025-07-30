@@ -18,7 +18,7 @@
       <tbody>
         <tr *ngFor="let item of cart.cartItems">
           <td><img [src]="item.imageUrl" alt="{{ item.productName }}" class="product-thumbnail"></td>
-          <td>{{ item.productName }}</td>
+          <td>{{ item.productName }} ({{ item.weight }}g)</td>
           <td>{{ item.category }}</td>
           <td>NT$ {{ item.price | number:'1.0-0' }}</td>
           <td>{{ item.stock }}</td>
@@ -31,7 +31,7 @@
           </td>
           <td>NT$ {{ item.subtotal | number:'1.0-0' }}</td>
           <td>
-            <button (click)="removeItem(item.productId)" class="delete-button">
+            <button (click)="removeItem(item)" class="delete-button">
               <mat-icon>delete</mat-icon>
             </button>
           </td>

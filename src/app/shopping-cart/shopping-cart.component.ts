@@ -33,7 +33,7 @@ export class ShoppingCartComponent implements OnInit {
     if (newQuantity < 0) {
       return; // Prevent negative quantity
     }
-    this.cartService.updateCartItem(item.productId, newQuantity).subscribe({
+    this.cartService.updateCartItem(item.productId, newQuantity, item.weight).subscribe({
       next: () => {
         this.loadCart(); // Reload cart to reflect changes
       },
@@ -43,8 +43,8 @@ export class ShoppingCartComponent implements OnInit {
     });
   }
 
-  removeItem(productId: string): void {
-    this.cartService.removeCartItem(productId).subscribe({
+  removeItem(item: CartItem): void {
+    this.cartService.removeCartItem(item.productId, item.weight).subscribe({
       next: () => {
         this.loadCart(); // Reload cart to reflect changes
       },
