@@ -155,6 +155,13 @@ export class AuthService {
     return throwError(() => new Error(errorMessage)); // 使用工廠函數返回錯誤
   }
 
+  validateToken(): Observable<boolean> {
+    return this.http.post<{ isValid: boolean }>(`${this.apiUrl}/validate-token`, {}).pipe(
+      map(response => response.isValid),
+      catchError(() => of(false))
+    );
+  }
+
   // 取得 JWT Token
   getToken(): string | null {
     return localStorage.getItem('token');

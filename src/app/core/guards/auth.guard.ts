@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
@@ -14,12 +15,26 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    if (this.authService.isLoggedIn()) {
-      return true; // 已登入，允許訪問
-    } else {
-      // 未登入，重定向到首頁或登入頁面
-      this.router.navigate(['/']); // 重定向到首頁
+    if (!this.authService.getToken()) {
+      this.router.navigate(['/']);
       return false;
     }
+
+    return this.authService.validateToken().pipe(
+      map(isValid => {
+        if (isValid) {
+          return true;
+        } else {
+          this.authService.logout();
+          this.router.navigate(['/']);
+          return false;
+        }
+      }),
+      catchError(() => {
+        this.authService.logout();
+        this.router.navigate(['/']);
+        return of(false);
+      })
+    );
   }
 }
