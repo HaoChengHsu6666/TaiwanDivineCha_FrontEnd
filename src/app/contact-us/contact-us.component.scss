@@ -1,0 +1,73 @@
+/* 將背景樣式應用到組件的宿主元素，使其佔滿整個網頁 */
+// .contact-us-container {
+//     display: block; /* 確保宿主元素佔據空間 */
+//     position: absolute; /* 絕對定位，覆蓋整個文檔流 */
+//     top: 0;
+//     left: 0;
+//     width: 100%; /* 佔滿父元素的寬度 */
+//     min-height: 100vh; /* 至少佔滿整個視口高度，內容超出時會自動擴展 */
+//     background-image: url('/assets/contactUs/contactUs.png'); /* 背景圖片路徑 */
+//     background-repeat: repeat; /* 重複顯示 */
+//     background-size: 150px 150px; /* 調整圖片大小，使其更鬆散 */
+//     opacity: 0.1; /* 調整為更低的透明度，使背景圖片更淡 */
+//     // z-index: -1; /* 將背景放在內容的下方 */
+// }
+
+.contact-us-content {
+    display: block; /* 確保宿主元素佔據空間 */
+    position: relative;
+    max-width: 600px;
+    margin: 50px auto; /* 增加一些上邊距，讓內容不會緊貼頁面頂部 */
+    padding: 20px;
+    text-align: center;
+    position: relative; /* 保持相對定位，以便 z-index 生效 */
+    z-index: 1; /* 確保容器內容在背景之上 */
+    // background-color: rgba(255, 255, 255, 0.8); /* 為容器添加半透明白色背景，確保文字可讀 */
+    border-radius: 8px; /* 可選：圓角邊框 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 可選：陰影效果 */
+    // opacity: 0.1; /* 調整為更低的透明度，使背景圖片更淡 */
+    /* 這裡不需要設置 opacity，因為 rgba() 已經控制了背景的透明度，
+       且不會影響到容器內的子元素（文字、表單元素）的透明度 */
+}
+
+/* 以下是現有的表單樣式，保持不變 */
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email" ],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.radio-group label {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}

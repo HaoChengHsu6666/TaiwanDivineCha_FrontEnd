@@ -42,6 +42,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { StoreSelectionModalComponent } from './store-selection-modal.component'; // <-- 導入 FormsModule
 import { PersonalCenterComponent } from './personal-center/personal-center.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
 
 
 @NgModule({
@@ -59,6 +60,7 @@ import { PersonalCenterComponent } from './personal-center/personal-center.compo
     CheckoutComponent,
     StoreSelectionModalComponent,
     PersonalCenterComponent,
+    ContactUsComponent,
   ],
   imports: [
     BrowserModule,

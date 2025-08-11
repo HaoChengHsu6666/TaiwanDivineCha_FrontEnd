@@ -16,7 +16,8 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     if (!this.authService.getToken()) {
-      this.router.navigate(['/']);
+      alert('請先登入'); // 提示訊息
+      this.router.navigate(['/auth/login']); // 重定向到登入頁面
       return false;
     }
 
@@ -26,13 +27,15 @@ export class AuthGuard implements CanActivate {
           return true;
         } else {
           this.authService.logout();
-          this.router.navigate(['/']);
+          alert('請先登入'); // 提示訊息
+          this.router.navigate(['/auth/login']); // 重定向到登入頁面
           return false;
         }
       }),
       catchError(() => {
         this.authService.logout();
-        this.router.navigate(['/']);
+        alert('請先登入'); // 提示訊息
+        this.router.navigate(['/auth/login']); // 重定向到登入頁面
         return of(false);
       })
     );

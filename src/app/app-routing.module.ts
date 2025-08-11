@@ -8,6 +8,7 @@ import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { BrandStoryComponent } from './brand-story/brand-story.component';
 import { FAQComponent } from './faq/faq.component';
 import { PersonalCenterComponent } from './personal-center/personal-center.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
 import { AuthGuard } from './core/guards/auth.guard'; // 導入 AuthGuard
 // import { LayoutComponent } from './layout/layout.component';
 
@@ -26,6 +27,7 @@ const routes: Routes = [
         { path: 'faq', component: FAQComponent }, // 常見問題頁面
         { path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuard] }, // 結帳頁面，需要登入
         { path: 'personal-center', component: PersonalCenterComponent, canActivate: [AuthGuard] }, // 個人中心頁面，需要登入
+        { path: 'contact-us', component: ContactUsComponent, canActivate: [AuthGuard] }, // 聯絡我們頁面
       ] 
   },
 

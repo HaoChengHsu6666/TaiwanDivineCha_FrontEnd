@@ -1,0 +1,68 @@
+<div class="contact-us-container">
+    <div class="contact-us-content">
+        <h2>洽詢表單</h2>
+        <p>對於您有哪些寶貴的需求、創意發想、建議，我們都樂於聽聞。歡迎聯繫我們，我們將儘快回覆您，謝謝：）</p>
+
+        <form (ngSubmit)="submitForm()" #contactForm="ngForm">
+            <div class="form-group">
+                <label for="inquiryItem">洽詢項目</label>
+                <select id="inquiryItem" name="inquiryItem" [(ngModel)]="contact.inquiryItem" required>
+                    <option value="" disabled selected>請選擇</option>
+                    <option value="禮品團購">禮品團購</option>
+                    <option value="企業採購">企業採購</option>
+                    <option value="客製化禮品">客製化禮品</option>
+                    <option value="異業合作方案洽談">異業合作方案洽談</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="companyName">貴公司/貴單位名稱</label>
+                <input type="text" id="companyName" name="companyName" [(ngModel)]="contact.companyName" required>
+                <input type="checkbox" [ngModel]="contact.contactPerson === contact.companyName" (ngModelChange)="contact.contactPerson = $event ? contact.companyName : ''" name="copyPerson"> 同聯絡人
+            </div>
+
+            <div class="form-group">
+                <label for="contactPerson">聯絡人</label>
+                <input type="text" id="contactPerson" name="contactPerson" [(ngModel)]="contact.contactPerson" required>
+            </div>
+
+            <div class="form-group">
+                <label for="contactPhone">連絡電話</label>
+                <input type="text" id="contactPhone" name="contactPhone" [(ngModel)]="contact.contactPhone" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">E-MAIL</label>
+                <input type="email" id="email" name="email" [(ngModel)]="contact.email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="estimatedQuantity">預計份數</label>
+                <input type="number" id="estimatedQuantity" name="estimatedQuantity" [(ngModel)]="contact.estimatedQuantity">
+            </div>
+
+            <div class="form-group">
+                <label>每份預算</label>
+                <div class="radio-group">
+                    <input type="radio" id="budget1" name="budgetPerUnit" value="$500以下" [(ngModel)]="contact.budgetPerUnit"> <label for="budget1">$500以下</label>
+                    <input type="radio" id="budget2" name="budgetPerUnit" value="$500 - $1,000" [(ngModel)]="contact.budgetPerUnit"> <label for="budget2">$500 - $1,000</label>
+                    <input type="radio" id="budget3" name="budgetPerUnit" value="$1,000 - $1,500" [(ngModel)]="contact.budgetPerUnit"> <label for="budget3">$1,000 - $1,500</label>
+                    <input type="radio" id="budget4" name="budgetPerUnit" value="$1,500 - $2,000" [(ngModel)]="contact.budgetPerUnit"> <label for="budget4">$1,500 - $2,000</label>
+                    <input type="radio" id="budget5" name="budgetPerUnit" value="$2,000以上" [(ngModel)]="contact.budgetPerUnit"> <label for="budget5">$2,000以上</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="deliveryDate">指定到貨日期</label>
+                <input type="date" id="deliveryDate" name="deliveryDate" [(ngModel)]="contact.deliveryDate">
+            </div>
+
+            <div class="form-group">
+                <label for="remarks">其他額外說明事項</label>
+                <textarea id="remarks" name="remarks" [(ngModel)]="contact.remarks"></textarea>
+            </div>
+
+            <button type="submit" [disabled]="!contactForm.form.valid">提交</button>
+        </form>
+    </div>  
+</div>
